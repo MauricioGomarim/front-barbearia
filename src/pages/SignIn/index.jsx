@@ -7,13 +7,6 @@ export function SignIn() {
       <Content>
         <h1 className="text-3xl font-medium">Faça login</h1>
         <Botao />
-        <Botao />
-        <Botao />
-        <Botao />
-        <Botao />
-        <Botao />
-        <Botao />
-
       </Content>
     </Container>
   );

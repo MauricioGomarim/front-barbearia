@@ -30,7 +30,7 @@ export const GlobalStyles = createGlobalStyle`
  
 
     body,input,button, textarea, select{
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Raleway', sans-serif;
         font-size: 16px;
         outline: none;
     }

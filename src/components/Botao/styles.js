@@ -2,16 +2,22 @@ import styled from "styled-components";
 
 
 export const Button = styled.a`
-        background: green;
-        
-        padding: 8px 50px 8px 20px;
-        color: #fff;
-        display: flex;
+        background-color: ${({ theme }) => theme.COLORS.ORANGE};
+        border: 1px solid ${({ theme }) => theme.COLORS.ORANGE};
+        color: ${({ theme }) => theme.COLORS.BASE};
+        font-weight:  800;
+        text-transform: uppercase;
         text-align: center;
-        justify-content: start;
+        padding: 8px 40px;
+        transition: all 0.5s ease;
+        text-align: center;
+        border-radius: 20px;
 
-        border-top: 5px solid red;
-        border-top-right-radius: 50px;
+        &:hover {
+                background-color: ${({ theme }) => theme.COLORS.BASE};
+        color: ${({ theme }) => theme.COLORS.ORANGE};
+        }
+
 `
     
 
