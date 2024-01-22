@@ -5,6 +5,9 @@ import theme from "./styles/theme";
 import { GlobalStyles } from "./styles/global.js";
 import { ThemeProvider } from "styled-components";
 import { Servicos } from "./pages/Serviços/index.jsx";
+import { Datas } from "./pages/Datas/index.jsx";
+import { Home } from "./pages/Home/index.jsx";
+
 import { Header } from "./components/Header/index.jsx"
 import { Footer } from "./components/Footer/index.jsx"
 
@@ -17,7 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <Header />
-      <Servicos />
+      <Datas />
       <Footer />
     </ThemeProvider>
   </React.StrictMode>
