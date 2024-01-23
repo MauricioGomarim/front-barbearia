@@ -1,17 +1,20 @@
 import { Container, Content } from "./style";
-import circulo from "../../assets/circulo.png";
-import seta from "../../assets/seta-esquerda.svg";
-import star from "../../assets/star.svg";
-import service from "../../assets/img2.jpg";
-import { Botao2 } from "../../components/Botao-bg-preto";
-import { Botao } from "../../components/Botao";
+import circulo from "../../../assets/circulo.png";
+import seta from "../../../assets/seta-esquerda.svg";
+import star from "../../../assets/star.svg";
+import service from "../../../assets/img2.jpg";
+import { Botao2 } from "../../../components/Botao-bg-preto";
+import { Botao } from "../../../components/Botao";
+import { Link } from "react-router-dom";
 
 
 export function Servicos() {
   return (
     <Container className="relative h-full">
       <div className="seta z-10 relative">
-        <img src={seta} />
+        <Link to="/">
+          <img src={seta} />
+        </Link>
       </div>
       <Content className="z-10 relative">
         <div className="select-profissional">
@@ -36,16 +39,14 @@ export function Servicos() {
             <div className="service">
               <img src={service} />
               <div className="infos">
-            
-                  <h1>Corte</h1>
-                  <div className="stars">
-                    <img src={star} />
-                    <img src={star} />
-                    <img src={star} />
-                    <img src={star} />
-                    <img src={star} />
-                  </div>
-               
+                <h1>Corte</h1>
+                <div className="stars">
+                  <img src={star} />
+                  <img src={star} />
+                  <img src={star} />
+                  <img src={star} />
+                  <img src={star} />
+                </div>
 
                 <div className="footer-card">
                   <div>
@@ -60,16 +61,14 @@ export function Servicos() {
             <div className="service">
               <img src={service} />
               <div className="infos">
-            
-                  <h1>Corte</h1>
-                  <div className="stars">
-                    <img src={star} />
-                    <img src={star} />
-                    <img src={star} />
-                    <img src={star} />
-                    <img src={star} />
-                  </div>
-               
+                <h1>Corte</h1>
+                <div className="stars">
+                  <img src={star} />
+                  <img src={star} />
+                  <img src={star} />
+                  <img src={star} />
+                  <img src={star} />
+                </div>
 
                 <div className="footer-card">
                   <div>
@@ -84,16 +83,14 @@ export function Servicos() {
             <div className="service">
               <img src={service} />
               <div className="infos">
-            
-                  <h1>Corte</h1>
-                  <div className="stars">
-                    <img src={star} />
-                    <img src={star} />
-                    <img src={star} />
-                    <img src={star} />
-                    <img src={star} />
-                  </div>
-               
+                <h1>Corte</h1>
+                <div className="stars">
+                  <img src={star} />
+                  <img src={star} />
+                  <img src={star} />
+                  <img src={star} />
+                  <img src={star} />
+                </div>
 
                 <div className="footer-card">
                   <div>
@@ -108,16 +105,14 @@ export function Servicos() {
             <div className="service">
               <img src={service} />
               <div className="infos">
-            
-                  <h1>Corte</h1>
-                  <div className="stars">
-                    <img src={star} />
-                    <img src={star} />
-                    <img src={star} />
-                    <img src={star} />
-                    <img src={star} />
-                  </div>
-               
+                <h1>Corte</h1>
+                <div className="stars">
+                  <img src={star} />
+                  <img src={star} />
+                  <img src={star} />
+                  <img src={star} />
+                  <img src={star} />
+                </div>
 
                 <div className="footer-card">
                   <div>
@@ -130,11 +125,10 @@ export function Servicos() {
             </div>
           </div>
         </div>
-        <div className="btnConfirmar"><Botao text="Confirmar" /></div>
-        
+        <div className="btnConfirmar">
+          <Botao text="Confirmar" href="/datas" />
+        </div>
       </Content>
-        
-      
 
       <div className="background z-0"></div>
     </Container>

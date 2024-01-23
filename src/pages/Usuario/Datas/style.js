@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import bg from "../../assets/img2.jpg";
+import bg from "../../../assets/img2.jpg";
 
 export const Container = styled.div`
   .background {
@@ -39,7 +39,7 @@ export const Content = styled.div`
     }
 
     .data {
-      // width: 8%;
+      cursor: pointer;
       padding: 20px 5px;
       border-radius: 20px;
       text-align: center;
@@ -50,17 +50,9 @@ export const Content = styled.div`
         font-weight: 700;
         margin-bottom: 5px;
       }
-    }
 
-    @media (max-width: 768px) {
-      .data {
-        //width: 23%;
-      }
-    }
-
-    @media (max-width: 425px) {
-      .data {
-        // width: 32%;
+      p {
+        text-transform: capitalize;
       }
     }
 
@@ -112,6 +104,5 @@ export const Content = styled.div`
     background-color: ${({ theme }) => theme.COLORS.ORANGE} !important;
     color: ${({ theme }) => theme.COLORS.BASE} !important;
     transition: all 0.5s ease !important;
-
   }
 `;

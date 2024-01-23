@@ -7,15 +7,24 @@ export function Header() {
   return (
     <Container>
       <Content>
-        <Hamburguer/>
+        <Hamburguer />
         <div className="logo">
-          <img src={logo} />
+          <a href="/">
+            <img src={logo} />
+          </a>
         </div>
         <div className="nav-user">
           <nav>
             <ul>
-              <li><a href="#">Home</a></li>
-              <li><a href="#">Sobre</a></li>
+              <li>
+                <a href="#">Home</a>
+              </li>
+              <li>
+                <a href="#">Sobre</a>
+              </li>
+              <li>
+                <a href="/minhas-reservas">Minhas reservas</a>
+              </li>
             </ul>
           </nav>
           <img src={perfil} />

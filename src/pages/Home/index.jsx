@@ -11,12 +11,12 @@ export function Home() {
     <Container>
       <Content>
         <div className="sec1 h-full flex justify-center items-center">
-          <div className="w-4/5 z-1 relative mx-auto my-0 flex justify-center items-center flex-wrap">
+          <div className="w-4/5 z-10 relative mx-auto my-0 flex justify-center items-center flex-wrap">
             <div className="font-bold text-5xl w-4/5  sm:w-2/4 column-text">
-              <h1 className="text-center text-3xl sm:text-5xl sm:text-left">
+              <h1 className="text-center text-3xl sm:text-5xl sm:text-left mb-5">
                 FAÇA SEU AGENDAMENTO AGORA MESMO !
-              </h1>{" "}
-              <Botao text="Fazer reserva" />
+              </h1>
+              <Botao text="Fazer reserva" className="flex max-w-80 text-3xl mb-5" href="/servicos"/>
             </div>
             <div className="w-4/5  sm:w-2/4">
               <img src={image} />

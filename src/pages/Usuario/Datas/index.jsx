@@ -1,15 +1,16 @@
 import { Container, Content } from "./style";
-import seta from "../../assets/seta-esquerda.svg";
+import seta from "../../../assets/seta-esquerda.svg";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import { Botao } from "../../components/Botao";
+import { Botao } from "../../../components/Botao";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useState, useEffect } from "react";
 import { addDays, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { Link } from "react-router-dom";
 
 export function Datas() {
   const [dias, setDias] = useState([]);
@@ -29,15 +30,19 @@ export function Datas() {
       const dia = addDays(hoje, i);
       const formatoDia = format(dia, "dd", { locale: ptBR });
       const nomeMes = format(dia, "MMMM", { locale: ptBR });
-      trintaDias.push({ data: formatoDia, nomeMes });
+      const diaDaSemana = format(dia, "eee", { locale: ptBR });
+      trintaDias.push({ data: formatoDia, nomeMes, diaDaSemana });
     }
+
     setDias(trintaDias);
   }, []);
 
   return (
     <Container className="relative h-full">
       <div className="seta z-10 relative">
-        <img src={seta} />
+        <Link to="/">
+          <img src={seta} />
+        </Link>
       </div>
       <Content className="z-10 relative">
         <div className="select-data">
@@ -75,9 +80,18 @@ export function Datas() {
               onSlideChange={() => console.log("slide change")}
             >
               {dias.map((item, index) => (
-                <SwiperSlide key={index} className={`data ${activeIndex === index ? 'active' : ''}`} onClick={() => handleSlideClick(index)}>
+                <SwiperSlide
+                  key={index}
+                  className={`data ${
+                    activeIndex === index ||
+                    (index === 0 && activeIndex === null)
+                      ? "active"
+                      : ""
+                  }`}
+                  onClick={() => handleSlideClick(index)}
+                >
                   <h2>{item.data}</h2>
-                  <p>{item.nomeMes}</p>
+                  <p>{item.diaDaSemana}</p>
                 </SwiperSlide>
               ))}
             </Swiper>
