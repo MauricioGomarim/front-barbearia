@@ -6,7 +6,6 @@ export const Container = styled.div`
   width: 100%;
 
   .sec1 {
-    height: 100vh;
     position: relative;
     > .background {
       background-image: url(${bg});
@@ -18,12 +17,16 @@ export const Container = styled.div`
       height: 100%;
       width: 100%;
     }
+
+    img {
+      width: 100%;
+    }
   }
 
   .sec2 {
-    height: 100vh;
     text-align: center;
     margin-top: 50px;
+    padding: 50px 20px 100px 20px;
 
 
     h1 {
