@@ -1,83 +1,59 @@
-import { Container, Content } from "./styles";
+import { api } from "../../services/api";
+
+import { Container, Content } from "./style";
 import { Botao } from "../../components/Botao";
 import { InputField } from "../../components/InputField";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hook/auth";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+
+import seta from "../../assets/seta-esquerda.svg";
+import { Link, useNavigate } from "react-router-dom";
+
 import imgSenha from "../../assets/olho-1.svg";
 import imgSenha2 from "../../assets/olho-2.svg";
-import { api } from "../../services/api";
+import imgPerfil from "../../assets/img-perfil.png";
 
-export function SignUp() {
+export function Dados() {
 
-  const navigate = useNavigate();
+  const [data, setData] = useState();
 
-  const [nome, setNome] = useState();
+
   const [email, setEmail] = useState();
   const [tel, setTel] = useState();
   const [password, setPassword] = useState();
-  const [passwordConfirm, setPasswordConfirm] = useState();
-  const {setLoading} = useAuth();
-  
-  const [maskActivePassword, setMaskPasswordActive] = useState(true);
-  const [maskActivePasswordConfirm, setMaskPasswordConfirmActive] =
-    useState(true);
+  const [passwordOld, setPasswordOld] = useState();
+  const navigate = useNavigate();
 
-  const [hasFocusNome, setHasFocusNome] = useState(false);
+
+  const { setLoading, loading, user } = useAuth();
+
   const [hasFocusEmail, setHasFocusEmail] = useState(false);
   const [hasFocusTel, setHasFocusTel] = useState(false);
 
+  const [maskActivePassword, setMaskPasswordActive] = useState(true);
+  const [maskActivePasswordOld, setMaskPasswordOldActive] =
+    useState(true);
+
   const [hasFocusPassword, setHasFocusPassword] = useState(false);
-  const [hasFocusPasswordConfirm, setHasFocusPasswordConfirm] = useState(false);
+  const [hasFocusPasswordOld, setHasFocusPasswordOld] = useState(false);
 
   const handleMaskPassword = () => {
     setMaskPasswordActive(!maskActivePassword);
   };
 
-  const handleMaskPasswordConfirm = () => {
-    setMaskPasswordConfirmActive(!maskActivePasswordConfirm);
+  const handleMaskPasswordOld = () => {
+    setMaskPasswordOldActive(!maskActivePasswordOld);
   };
 
-  async function handleSignUp() {
-    setLoading(true);
 
-    if (!nome || !email || !tel || !password || !passwordConfirm) {
-      setLoading(false);
-      return toast.warn("Preencha todos os campos!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-
-    if (password != passwordConfirm) {
-      setLoading(false);
-      return toast.warn("As senhas não coincidem!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
-
+  async function handleEditar() {
+    setLoading(true)
     try {
-      await api.post("/users", {
-        name: nome,
-        email,
-        telefone: tel,
-        password,
-      });
-      toast.success("Usuário cadastrado com sucesso!", {
+      
+      await api.put(`/users/${user.id}`, { email, telefone: tel, password, old_password: passwordOld });
+
+      toast.success("Usuário atualizado com sucesso!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -86,12 +62,14 @@ export function SignUp() {
         draggable: true,
         progress: undefined,
         theme: "light",
-      });
-      setLoading(false);
-      navigate("/login");
+        });
+        setLoading(false)
+      navigate("/dados")
+      
     } catch (error) {
       if (error.response) {
-        toast.warn(error.response.data.message, {
+
+        toast.warning(error.response.data.message, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -100,10 +78,11 @@ export function SignUp() {
           draggable: true,
           progress: undefined,
           theme: "light",
-        });
-        setLoading(false);
+          });
+          setLoading(false)
+          return
       } else {
-        toast.error("Erro ao cadastrar o cliente!", {
+        toast.warning("Erro ao editadar usuário!", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -112,35 +91,39 @@ export function SignUp() {
           draggable: true,
           progress: undefined,
           theme: "light",
-        });
-        setLoading(false);
+          });
+          setLoading(false)
       }
     }
   }
 
+
+  useEffect(() => {
+    async function fetchUser() {
+      const response = await api.get(`/users/${user.id}`);
+      setEmail(response.data.email)
+      setTel(response.data.telefone)
+
+    }
+    fetchUser();
+  }, []);
+
   return (
     <Container>
+      <div className="seta z-10 relative">
+        <Link to="/">
+          <img src={seta} />
+        </Link>
+      </div>
       <Content>
-        <h1>Faça seu cadastro</h1>
-        <div className="container-input">
-          <InputField
-            type="text"
-            onChange={(e) => setNome(e.target.value)}
-            onFocus={() => setHasFocusNome(true)}
-            onBlur={() => setHasFocusNome(false)}
-          />
-          <label
-            className={`label ${nome || hasFocusNome ? "inputHasValue" : ""}`}
-          >
-            Nome
-          </label>
-        </div>
+        <img className="img-perfil" src={imgPerfil} />
         <div className="container-input">
           <InputField
             type="text"
             onChange={(e) => setEmail(e.target.value)}
             onFocus={() => setHasFocusEmail(true)}
             onBlur={() => setHasFocusEmail(false)}
+            value={email}
           />
           <label
             className={`label ${email || hasFocusEmail ? "inputHasValue" : ""}`}
@@ -148,21 +131,22 @@ export function SignUp() {
             Email
           </label>
         </div>
+
         <div className="container-input">
           <InputField
-            mask="(00) 0 0000-0000"
             type="text"
             onChange={(e) => setTel(e.target.value)}
             onFocus={() => setHasFocusTel(true)}
             onBlur={() => setHasFocusTel(false)}
+            value={tel}
           />
-
           <label
             className={`label ${tel || hasFocusTel ? "inputHasValue" : ""}`}
           >
             Telefone
           </label>
         </div>
+
         <div className="container-input">
           <InputField
             type={`${maskActivePassword ? "password" : "text"}`}
@@ -175,7 +159,7 @@ export function SignUp() {
               password || hasFocusPassword ? "inputHasValue" : ""
             }`}
           >
-            Senha
+            Senha nova
           </label>
           {maskActivePassword == true ? (
             <img
@@ -191,43 +175,41 @@ export function SignUp() {
             />
           )}
         </div>
+
         <div className="container-input">
           <InputField
-            type={`${maskActivePasswordConfirm ? "password" : "text"}`}
-            onChange={(e) => setPasswordConfirm(e.target.value)}
-            onFocus={() => setHasFocusPasswordConfirm(true)}
-            onBlur={() => setHasFocusPasswordConfirm(false)}
+            type={`${maskActivePasswordOld ? "password" : "text"}`}
+            onChange={(e) => setPasswordOld(e.target.value)}
+            onFocus={() => setHasFocusPasswordOld(true)}
+            onBlur={() => setHasFocusPasswordOld(false)}
           />
           <label
             className={`label ${
-              passwordConfirm || hasFocusPasswordConfirm ? "inputHasValue" : ""
+              passwordOld || hasFocusPasswordOld ? "inputHasValue" : ""
             }`}
           >
-            Confirmar senha
+            Senha antiga
           </label>
-          {maskActivePasswordConfirm == true ? (
+          {maskActivePasswordOld == true ? (
             <img
               src={imgSenha}
               alt="Imagem Senha"
-              onClick={handleMaskPasswordConfirm}
+              onClick={handleMaskPasswordOld}
             />
           ) : (
             <img
               src={imgSenha2}
               alt="Imagem Senha"
-              onClick={handleMaskPasswordConfirm}
+              onClick={handleMaskPasswordOld}
             />
           )}
         </div>
         <Botao
           className="!py-2 text-sm mb-4 w-full"
-          text="Entrar"
+          text="Salvar"
           type="button"
-          onClick={handleSignUp}
+          onClick={handleEditar}
         />
-        <p>
-          Já tem uma conta? <a href="/login">Entrar!</a>
-        </p>
       </Content>
     </Container>
   );

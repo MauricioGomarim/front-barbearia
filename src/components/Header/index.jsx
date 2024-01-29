@@ -62,7 +62,7 @@ export function Header() {
 
             {user ? ( <ul>
               <li>
-                <a href="/">Meus dados</a>
+                <a href="/dados">Meus dados</a>
               </li>
               <li>
                 <a href="/minhas-reservas">Minhas reservas</a>

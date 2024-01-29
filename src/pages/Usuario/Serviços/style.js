@@ -43,6 +43,10 @@ export const Content = styled.div`
         gap: 20px;
         transition: all 0.5s ease;
 
+        img {
+          max-width: 100px;
+          border-radius: 50%;
+        }
         &:hover {
           transform: scale(1.05);
         }
