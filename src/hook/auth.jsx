@@ -6,12 +6,14 @@ import { api } from "../services/api";
 export const AuthContext = createContext({});
 
 function AuthProvider({ children }) {
+
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(0);
 
   async function signIn(login, password) {
+
     try {
-      const response = await api.post("/sessions", { name: login, password });
+      const response = await api.post("/sessions", { email: login, password });
 
       const { user, token } = response.data;
 
@@ -23,7 +25,17 @@ function AuthProvider({ children }) {
       // Adicionando o token do tipo bearer de authorization por padrão de todas requisições
       api.defaults.headers.authorization = `Bearer ${token}`;
       setLoading(0);
-      window.location.href = "/";
+      return toast.success("Logado por sucesso!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      
       
     } catch (error) {
       if (error.response) {

@@ -6,7 +6,7 @@ export const Container = styled.div`
   background-size: cover;
   height: 100vh;
   width: 100%;
-
+  padding: 0 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,5 +50,41 @@ export const Content = styled.div`
     a {
       font-weight: 700;
     }
+  }
+
+  .container-input {
+    position: relative;
+
+    input:focus ~ .label {
+      left: 0;
+      top: -20px;
+      font-size: 12px;
+    }
+  }
+
+  img {
+    max-width: 25px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    z-index: 50;
+    filter: brightness(0) invert(1);
+    cursor: pointer;
+  }
+
+  .label {
+    position: absolute;
+    z-index: 20;
+    left: 20px;
+    top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.5s ease;
+  }
+
+  .inputHasValue {
+    left: 0;
+    top: -20px;
+    font-size: 12px;
   }
 `;

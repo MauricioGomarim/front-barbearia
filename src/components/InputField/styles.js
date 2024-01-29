@@ -2,7 +2,8 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   position: relative;
-        margin-bottom: 20px;
+  margin-bottom: 20px;
+  z-index: 50;
   img {
     max-width: 25px;
     position: absolute;
@@ -34,21 +35,21 @@ export const Container = styled.div`
     top: -20px;
     font-size: 12px;
   }
-`;
 
-export const CampoInput = styled.input`
-  background-color: #333333;
-  border-bottom: 1px solid ${({ theme }) => theme.COLORS.WHITE};
-  color: ${({ theme }) => theme.COLORS.WHITE};
-  font-weight: 600;
-  padding: 8px 50px 8px 20px;
-  transition: all 0.5s ease;
-  text-align: start;
-  border-radius: 10px;
-  width: 100%;
-  position: relative;
+  .input {
+    background-color: transparent;
+    border-bottom: 1px solid ${({ theme }) => theme.COLORS.WHITE};
+    color: ${({ theme }) => theme.COLORS.WHITE};
+    font-weight: 600;
+    padding: 8px 50px 8px 20px;
+    transition: all 0.5s ease;
+    text-align: start;
+    border-radius: 10px;
+    width: 100%;
+    position: relative;
 
-  &:focus {
-    background-color: ${({ theme }) => theme.COLORS.BASE};
+    &:focus {
+      background-color: ${({ theme }) => theme.COLORS.BASE};
+    }
   }
 `;

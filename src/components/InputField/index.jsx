@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
-import { CampoInput, Container } from "./styles";
+import { Container } from "./styles";
+import { IMaskInput } from "react-imask";
 
-export function InputField({ title,...rest }) {
+export function InputField({ title, mask, ...rest }) {
 
   return (
     <Container>
-      <CampoInput className="input" {...rest} />
+      <IMaskInput mask={mask} className="input" {...rest} />
     </Container>
   );
 }

@@ -11,7 +11,7 @@ import imgSenha2 from "../../assets/olho-2.svg";
 export function SignIn() {
   const [login, setLogin] = useState();
   const [password, setPassword] = useState();
-  const { signIn, setLoading, loading } = useAuth();
+  const {signIn, setLoading, loading } = useAuth();
 
   const [hasValue, setHasValue] = useState(false);
   const [maskActive, setMaskActive] = useState(true);
@@ -58,7 +58,6 @@ export function SignIn() {
         <h1>Faça login</h1>
         <div className="container-input">
           <InputField
-            title="Login"
             type="text"
             onChange={(e) => setLogin(e.target.value)}
             onFocus={() => setHasFocusLogin(true)}
@@ -67,7 +66,7 @@ export function SignIn() {
           <label
             className={`label ${login || hasFocusLogin ? "inputHasValue" : ""}`}
           >
-            Login
+            Email
           </label>
         </div>
         <div className="container-input">
@@ -99,7 +98,7 @@ export function SignIn() {
           onClick={handleSignIn}
         />
         <p>
-          Não tem uma conta? <a href="/">Cadastre-se!</a>
+          Não tem uma conta? <a href="/register">Cadastre-se!</a>
         </p>
       </Content>
     </Container>
