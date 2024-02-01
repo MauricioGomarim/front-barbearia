@@ -24,6 +24,8 @@ export function AppRoutes(){
 
     const { user } = useAuth();
 
+    console.log(user?.isBarbeiro)
+
     return (
         <Routes>
             <Route path="/login" element={user ? <><Header /><Home /> <Footer /></>  : <SignIn />} />   
@@ -33,7 +35,7 @@ export function AppRoutes(){
             <Route path="/minhas-reservas" element={user ? <><Header /><Reservas /> <Footer /></> : <Not_found />} />
             <Route path="/dados" element={user ? <Dados />  : <Not_found />} />
 
-            <Route path="/gerenciar-servicos" element={user ? <Gerenciar_servicos />  : <Not_found />} />
+            <Route path="/gerenciar-servicos" element={ user?.isBarbeiro ? <Gerenciar_servicos />  : <Not_found />} />
 
             
 

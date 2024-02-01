@@ -64,6 +64,15 @@ export function Header() {
               <li>
                 <a href="/dados">Meus dados</a>
               </li>
+              
+              {
+                user.isBarbeiro != 0 && (
+                  <li>
+                  <a href="/gerenciar-servicos">Gerenciar serviços</a>
+                </li>
+                )
+              }
+             
               <li>
                 <a href="/minhas-reservas">Minhas reservas</a>
               </li>
