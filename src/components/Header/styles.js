@@ -26,9 +26,8 @@ export const Content = styled.div`
     position: relative;
 
     .dropdown.menu-active {
-      padding: 15px 0px;
-      height: auto;
-      overflow: visible;
+      padding: 15px 0px 0px 0px;
+      opacity: 1;
       overflow: hidden;
       transition: all 0.5s ease;
     }
@@ -39,18 +38,22 @@ export const Content = styled.div`
       right: 0;
       top: 100%;
       width: 300px;
-      height: 0px;
+      height: auto;
+      opacity: 0;
       padding: 0;
       overflow: hidden;
       background-color: ${({ theme }) => theme.COLORS.BASE};
       border-radius: 15px;
+
+      svg {
+        font-size: 30px;
+      }
       .header-dropdown {
         display: flex;
         align-items: center;
         gap: 10px;
         border-bottom: 1px solid #ffffff69;
         padding-bottom: 15px;
-        margin-bottom: 15px;
       }
       .coluna-infos {
         display: flex;
@@ -59,14 +62,19 @@ export const Content = styled.div`
       }
       .coluna-button {
         padding-right: 15px;
-
       }
-      .coluna-button a, .login a {
+      .coluna-button a,
+      .login a {
         background-color: #ffffff0d;
         border-radius: 10px;
         padding: 8px 10px;
         font-size: 12px;
         text-transform: uppercase;
+      }
+
+      .coluna-button a:hover,
+      .login a:hover {
+        background-color: #ffffff21;
       }
       .header-dropdown img {
         background-color: #fff;
@@ -83,26 +91,37 @@ export const Content = styled.div`
       }
       ul {
         border-bottom: 1px solid #ffffff69;
-        padding-bottom: 15px;
+        
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
       }
-      ul li{
-        padding: 0px 15px;
+      ul li {
+        padding: 15px 15px;
       }
-
+      ul li:hover {
+        background-color: #ffffff21;
+      }
       ul li a {
         font-size: 14px !important;
         font-weight: 600;
         color: ${({ theme }) => theme.COLORS.WHITE};
         width: 100%;
-        display: block;
+        display: flex;
+        align-items: center;
+        gap: 10px;
 
         &:hover {
         }
       }
 
-      .footer-dropdown {
-        margin-top: 15px;
+      ul li a p {
+        font-size: 12px;
+        font-weight: 600;
+        color: #a8a5a5;
+      }
 
+      .footer-dropdown {
         ul {
           border: none;
           padding-bottom: 0;
