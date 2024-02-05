@@ -19,10 +19,25 @@ import imgPerfil from "../../../assets/img-perfil.png";
 import star from "../../../assets/star.svg";
 import service from "../../../assets/img2.jpg";
 
+import Modal from 'react-modal';
+
 export function Gerenciar_servicos() {
   const navigate = useNavigate();
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   const { setLoading, loading, user } = useAuth();
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    subtitle.style.color = '#f00';
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   useEffect(() => {
     async function fetchUser() {
@@ -40,6 +55,7 @@ export function Gerenciar_servicos() {
       </div>
       <Content>
         <Botao text="Adicionar serviço" className="!py-2 text-sm mb-4 w-full" />
+        
         <div className="services">
           <div className="service">
             <img src={service} />
@@ -59,12 +75,23 @@ export function Gerenciar_servicos() {
                   <p>R$ 30,00</p>
                 </div>
                 <Botao2 text="Editar" />
+                <button onClick={openModal}>Open Modal</button>
               </div>
             </div>
           </div>
       
         </div>
       </Content>
+
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        contentLabel="Example Modal"
+      >
+        <h1>Teste</h1>
+        <button onClick={closeModal}>close</button>
+      </Modal>
     </Container>
   );
 }

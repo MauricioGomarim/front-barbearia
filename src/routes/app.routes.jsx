@@ -24,8 +24,6 @@ export function AppRoutes(){
 
     const { user } = useAuth();
 
-    console.log(user?.isBarbeiro)
-
     return (
         <Routes>
             <Route path="/login" element={user ? <><Header /><Home /> <Footer /></>  : <SignIn />} />   

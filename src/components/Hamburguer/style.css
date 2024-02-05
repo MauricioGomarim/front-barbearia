@@ -49,15 +49,12 @@
    
    cursor: pointer;
    
-   opacity: 0; /* hide this */
-   z-index: 2; /* and place it over the hamburger */
+   opacity: 0; 
+   z-index: 2; 
    
    -webkit-touch-callout: none;
  }
  
- /*
-  * Just a quick hamburger
-  */
  #menuToggle span
  {
    display: block;
@@ -88,10 +85,7 @@
    transform-origin: 0% 100%;
  }
  
- /* 
-  * Transform all the slices of hamburger
-  * into a crossmark.
-  */
+
  #menuToggle input:checked ~ span
  {
    opacity: 1;

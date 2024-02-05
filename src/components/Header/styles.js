@@ -26,7 +26,7 @@ export const Content = styled.div`
     position: relative;
 
     .dropdown.menu-active {
-      padding: 10px 20px;
+      padding: 15px 0px;
       height: auto;
       overflow: visible;
       overflow: hidden;
@@ -38,21 +38,74 @@ export const Content = styled.div`
       position: absolute;
       right: 0;
       top: 100%;
-      width: 200px;
+      width: 300px;
       height: 0px;
       padding: 0;
       overflow: hidden;
-      background-color: #fff;
-      border-radius: 10px;
+      background-color: ${({ theme }) => theme.COLORS.BASE};
+      border-radius: 15px;
+      .header-dropdown {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1px solid #ffffff69;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+      }
+      .coluna-infos {
+        display: flex;
+        gap: 10px;
+        padding-left: 15px;
+      }
+      .coluna-button {
+        padding-right: 15px;
+
+      }
+      .coluna-button a, .login a {
+        background-color: #ffffff0d;
+        border-radius: 10px;
+        padding: 8px 10px;
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+      .header-dropdown img {
+        background-color: #fff;
+        border-radius: 100%;
+        height: fit-content;
+      }
+      .header-dropdown h1 {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1rem;
+      }
+      .header-dropdown p {
+        font-size: 14px;
+      }
+      ul {
+        border-bottom: 1px solid #ffffff69;
+        padding-bottom: 15px;
+      }
+      ul li{
+        padding: 0px 15px;
+      }
 
       ul li a {
         font-size: 14px !important;
         font-weight: 600;
-        color: ${({ theme }) => theme.COLORS.BASE};
+        color: ${({ theme }) => theme.COLORS.WHITE};
         width: 100%;
         display: block;
 
         &:hover {
+        }
+      }
+
+      .footer-dropdown {
+        margin-top: 15px;
+
+        ul {
+          border: none;
+          padding-bottom: 0;
         }
       }
     }

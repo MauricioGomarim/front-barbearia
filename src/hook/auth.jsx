@@ -26,14 +26,14 @@ function AuthProvider({ children }) {
       api.defaults.headers.authorization = `Bearer ${token}`;
       setLoading(0);
       return toast.success("Logado por sucesso!", {
-        position: "top-right",
+        position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "dark",
       });
       
       
@@ -41,28 +41,28 @@ function AuthProvider({ children }) {
       if (error.response) {
         setLoading(0);
         return toast.warn("Login ou senha incorretos!", {
-          position: "top-right",
+          position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "light",
+          theme: "dark",
         });
       } else {
         setLoading(0);
         return toast.error(
           "Não foi possível fazer o login, tente novamente mais tarde!",
           {
-            position: "top-right",
+            position: "bottom-right",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: "light",
+            theme: "dark",
           }
         );
       }
