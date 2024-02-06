@@ -94,7 +94,6 @@ export const Content = styled.div`
         
         display: flex;
         flex-direction: column;
-        gap: 15px;
       }
       ul li {
         padding: 15px 15px;
