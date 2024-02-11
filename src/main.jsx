@@ -9,6 +9,8 @@ import { AuthProvider } from "./hook/auth";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
+import { Perfil } from "./pages/Painel/Perfil"
+
 
 
 

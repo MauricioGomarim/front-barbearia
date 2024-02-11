@@ -9,10 +9,15 @@ import { Dados } from "../pages/Dados"
 import { Gerenciar_servicos } from "../pages/Barbeiro/Gerenciar_serviços"
 
 
+import { Perfil } from '../pages/Painel/Perfil'
+import { Dashboard } from '../pages/Painel/Dashboard'
+
+
+
 
 import { Header } from "../components/Header/index.jsx";
 import { Footer } from "../components/Footer/index.jsx";
-
+import { HeaderPainel } from "../components/HeaderPainel";
 
 import { SignIn } from '../pages/SignIn'
 import { SignUp } from '../pages/SignUp'
@@ -35,14 +40,17 @@ export function AppRoutes(){
 
             <Route path="/gerenciar-servicos" element={ user?.isBarbeiro ? <Gerenciar_servicos />  : <Not_found />} />
 
-            
-
-
             <Route path="/" element={<><Header /><Home /> <Footer /></>} />
             <Route path="/datas" element={<><Header /><Datas /><Footer /></>} />
             <Route path="/servicos" element={<><Header /><Servicos /><Footer /></>} />
 
             <Route path="*" element={<Not_found />} />
+
+            <Route path="/dashboard-painel" element={<Dashboard />} />
+            <Route path="/perfil-barbeiro" element={<Perfil />} />
+
+
+
         </Routes>
     )
 }
