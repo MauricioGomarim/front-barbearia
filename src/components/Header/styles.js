@@ -26,7 +26,7 @@ export const Content = styled.div`
     position: relative;
 
     .dropdown.menu-active {
-      padding: 15px 0px 0px 0px;
+      padding: 0px;
       opacity: 1;
       overflow: hidden;
       transition: all 0.5s ease;
@@ -54,6 +54,7 @@ export const Content = styled.div`
         gap: 10px;
         border-bottom: 1px solid #ffffff69;
         padding-bottom: 15px;
+        padding-top: 15px;
       }
       .coluna-infos {
         display: flex;

@@ -79,9 +79,16 @@ export function Header() {
                   </div>
                 </div>
                 <div className="coluna-button">
-                  <a className="button-perfil" href="/dados">
-                    Ver perfil
-                  </a>
+                  {user.isBarbeiro != 0 ? (
+                    <a className="button-perfil" href="/dashboard-painel">
+                      Painel
+                    </a>
+                  ) : (
+                    <a className="button-perfil" href="/dados">
+                      Ver perfil
+                    </a>
+                  )}
+               
                 </div>
               </div>
             )}
@@ -90,18 +97,35 @@ export function Header() {
               <ul>
                 {user.isBarbeiro != 0 && (
                   <li>
-                    <a href="/gerenciar-servicos"><BsScissors /><div><h1>Gerenciar serviços</h1> <p>Adicionar/editar ou remover serviços.</p></div></a>
+                    <a href="/servicos-painel">
+                      <BsScissors />
+                      <div>
+                        <h1>Gerenciar serviços</h1>
+                        <p>Adicionar/editar ou remover serviços.</p>
+                      </div>
+                    </a>
                   </li>
                 )}
 
                 {user.isBarbeiro != 0 ? (
                   <li>
-                   <a href="/gerenciar-servicos"><BsGrid3X3GapFill /><div><h1>Gerenciar reservas</h1> <p>Acompanhe o status de reservas.</p></div></a>
+                    <a href="/agendamentos-painel">
+                      <BsGrid3X3GapFill />
+                      <div>
+                        <h1>Gerenciar reservas</h1>
+                        <p>Acompanhe o status de reservas.</p>
+                      </div>
+                    </a>
                   </li>
                 ) : (
                   <li>
-                   
-                    <a href="/minhas-reservas"><BsGrid3X3GapFill /><div><h1>Minhas reservas</h1> <p>Acompanhe o status de suas reservas.</p></div></a>
+                    <a href="/minhas-reservas">
+                      <BsGrid3X3GapFill />
+                      <div>
+                        <h1>Minhas reservas</h1>
+                        <p>Acompanhe o status de suas reservas.</p>
+                      </div>
+                    </a>
                   </li>
                 )}
               </ul>
@@ -119,9 +143,11 @@ export function Header() {
                 <ul>
                   <li>
                     <Link type="button" to="/" onClick={LogoutFunc}>
-                    <IoMdLogOut /><div><h1>Sair</h1></div>
+                      <IoMdLogOut />
+                      <div>
+                        <h1>Sair</h1>
+                      </div>
                     </Link>
-                  
                   </li>
                 </ul>
               </div>

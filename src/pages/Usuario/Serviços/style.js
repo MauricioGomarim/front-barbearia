@@ -74,7 +74,7 @@ export const Content = styled.div`
   .services {
     display: flex;
     flex-wrap: wrap;
-    gap: 5%;
+    gap: 6%;
   }
 
   .service {
@@ -85,6 +85,9 @@ export const Content = styled.div`
     border-bottom-right-radius: 20px;
     margin-bottom: 30px;
 
+    @media (max-width: 768px) {
+      width: 100%;
+    }
     .footer-card {
       display: flex;
       justify-content: space-between;

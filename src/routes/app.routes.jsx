@@ -10,6 +10,7 @@ import { Gerenciar_servicos } from "../pages/Barbeiro/Gerenciar_serviços"
 
 
 import { Perfil } from '../pages/Painel/Perfil'
+import { ServicosPainel } from '../pages/Painel/ServicosPainel'
 import { Dashboard } from '../pages/Painel/Dashboard'
 
 
@@ -29,9 +30,10 @@ export function AppRoutes(){
 
     const { user } = useAuth();
 
+    console.log(user)
     return (
         <Routes>
-            <Route path="/login" element={user ? <><Header /><Home /> <Footer /></>  : <SignIn />} />   
+            <Route path="/login" element={user ? (user.isBarbeiro ? <Dashboard /> : <><Header /><Home /><Footer /></>) : <SignIn />} />   
             <Route path="/register" element={user ? <><Header /><Home /> <Footer /></> : <SignUp />} />   
 
 
@@ -48,6 +50,8 @@ export function AppRoutes(){
 
             <Route path="/dashboard-painel" element={<Dashboard />} />
             <Route path="/perfil-barbeiro" element={<Perfil />} />
+            <Route path="/servicos-painel" element={<ServicosPainel />} />
+
 
 
 
