@@ -6,12 +6,19 @@ import servicos from "../../assets/icones/servico-tecnico.svg";
 import solicitacoes from "../../assets/icones/pendencia.svg";
 import agendamentos from "../../assets/icones/calendario.svg";
 import deslogar from "../../assets/icones/deslogar.svg";
+import { useAuth } from "../../hook/auth.jsx";
 
 
 import { NavLink } from "react-router-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 
 export function Menu() {
+
+  const { Logout, user } = useAuth();
+
+  function Deslogar(){
+      Logout()
+  }
   return (
     <Container>
       <HamburguerPainel />
@@ -53,7 +60,7 @@ export function Menu() {
 
       <ul className="logout">
           <li>
-            <button>
+            <button onClick={Deslogar}>
               <img src={deslogar} />
               <p>Deslogar</p>
             </button>

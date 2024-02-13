@@ -12,6 +12,10 @@ import { Gerenciar_servicos } from "../pages/Barbeiro/Gerenciar_serviços"
 import { Perfil } from '../pages/Painel/Perfil'
 import { ServicosPainel } from '../pages/Painel/ServicosPainel'
 import { Dashboard } from '../pages/Painel/Dashboard'
+import { Solicitacoes } from '../pages/Painel/Solicitacoes'
+import { Agendamentos } from '../pages/Painel/Agendamentos'
+
+
 
 
 
@@ -48,9 +52,13 @@ export function AppRoutes(){
 
             <Route path="*" element={<Not_found />} />
 
-            <Route path="/dashboard-painel" element={<Dashboard />} />
-            <Route path="/perfil-barbeiro" element={<Perfil />} />
-            <Route path="/servicos-painel" element={<ServicosPainel />} />
+            <Route path="/dashboard-painel" element={ user?.isBarbeiro ? <Dashboard />  : <><Header /><Home /><Footer /></>} />
+            <Route path="/perfil-barbeiro" element={ user?.isBarbeiro ? <Perfil />  : <><Header /><Home /><Footer /></>} />
+            <Route path="/servicos-painel" element={ user?.isBarbeiro ? <ServicosPainel />  : <><Header /><Home /><Footer /></>} />
+            <Route path="/solicitacoes-painel" element={ user?.isBarbeiro ? <Solicitacoes />  : <><Header /><Home /><Footer /></>} />
+            <Route path="/agendamentos-painel" element={ user?.isBarbeiro ? <Agendamentos />  : <><Header /><Home /><Footer /></>} />
+
+
 
 
 

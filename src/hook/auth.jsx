@@ -74,7 +74,16 @@ function AuthProvider({ children }) {
     localStorage.removeItem("@sistema-barbearia:token");
     localStorage.removeItem("@sistema-barbearia:user");
     setData({});
-    return;
+    return toast.success("Sessão encerrada..", {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   }
 
   useEffect(() => {
