@@ -1,11 +1,11 @@
 import { Container } from "./styles";
 
-export function Textarea({ title}) {
+export function Textarea({ title, ...rest}) {
   return (
     <Container>
       <label>
         {title}
-        <textarea rows="5" />
+        <textarea rows="5" {...rest} />
       </label>
     </Container>
   );

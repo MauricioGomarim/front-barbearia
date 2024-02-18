@@ -7,6 +7,9 @@ export const Container = styled.div`
   grid-template-areas: "header header" "menu content";
   transition: all 0.5s ease;
 
+  .horas {
+    color: red;
+  }
   @media (max-width: 768px) {
     .foto-perfil {
       width: 100% !important;

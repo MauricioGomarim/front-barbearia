@@ -9,10 +9,7 @@ import { AuthProvider } from "./hook/auth";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
-import { Perfil } from "./pages/Painel/Perfil"
-
-
-
+import { Perfil } from "./pages/Painel/Perfil";
 
 // import { Header } from "./components/Header/index.jsx";
 // import { Footer } from "./components/Footer/index.jsx";

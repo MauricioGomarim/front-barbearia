@@ -7,8 +7,6 @@ export default {
       BASE: "#222222",
       BASE_2: "#333333",
 
-  
-     
 
       OCEAN: "#D0E3F1",
 

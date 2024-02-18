@@ -1,11 +1,12 @@
 import { Container } from "./styles";
+import { IMaskInput } from "react-imask";
 
-export function Input({ title, ...rest}) {
+export function Input({ title,mask, value, ...rest}) {
   return (
     <Container>
       <label>
         {title}
-        <input {...rest}/>
+        <IMaskInput mask={mask} {...rest} value={value || ""} />
       </label>
     </Container>
   );

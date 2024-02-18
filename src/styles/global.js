@@ -8,6 +8,10 @@ export const GlobalStyles = createGlobalStyle`
         box-sizing: border-box;
     }
 
+    .MuiSlider-root {
+        color: #EC8C08 !important;
+    }
+
     body {
         -webkit-font-smoothing: antialiased;
     }

@@ -13,7 +13,7 @@ export function HamburguerPainel() {
     <div onClick={handleMenu} className="menu-burguer-painel">
       <nav role="navigation">
         <div id="menuToggle">
-          <input type="checkbox" checked={menuActive} />
+          <input type="checkbox" checked={menuActive} onChange={setMenuActive}/>
           <span></span>
           <span></span>
           <span></span>
