@@ -1,5 +1,8 @@
 "use client";
 
+import { Dropdown } from "flowbite-react";
+import { HiCog, HiCurrencyDollar, HiLogout, HiViewGrid } from "react-icons/hi";
+
 import { api } from "../../../services/api";
 /** react flowbite */
 import {
@@ -39,31 +42,28 @@ export function ServicosPainel() {
   const { menuActive, setMenuActive, user } = useAuth();
   const [reloadServices, setReloadServices] = useState(false);
 
-    /* parte do modal de editar serviço */
-    const [openModalEditarServico, setOpenModalEditarServico] = useState(false);
-    const [nameEditar, setNameEditar] = useState("");
-    const [estrelhasEditar, setEstrelhasEditar] = useState(1);
-    const [valorEditar, setValorEditar] = useState(0);
-    const [duracaoEditar, setDuracaoEditar] = useState(0);
-    const [serviceId, setServiceID] = useState(0);
-
-  
+  /* parte do modal de editar serviço */
+  const [openModalEditarServico, setOpenModalEditarServico] = useState(false);
+  const [nameEditar, setNameEditar] = useState("");
+  const [estrelhasEditar, setEstrelhasEditar] = useState(1);
+  const [valorEditar, setValorEditar] = useState(0);
+  const [duracaoEditar, setDuracaoEditar] = useState(0);
+  const [serviceId, setServiceID] = useState(0);
 
   /* parte do modal de adicionar serviço */
-  const [openModalAdicionarServico, setOpenModalAdicionarServico] = useState(false);
+  const [openModalAdicionarServico, setOpenModalAdicionarServico] =
+    useState(false);
   const [name, setName] = useState("");
   const [estrelhas, setEstrelhas] = useState(1);
   const [valor, setValor] = useState(0);
   const [duracao, setDuracao] = useState(0);
   const maxValue = 150; // Definindo o valor máximo
 
-
   /* parte do modal de adicionar serviço */
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState("");
   /* parte do modal de editar serviço */
-  const [servico, setServico] = useState()
+  const [servico, setServico] = useState();
   /* parte do modal de editar serviço */
-
 
   const [services, setServices] = useState([]);
 
@@ -150,34 +150,55 @@ export function ServicosPainel() {
   }
   /* parte do modal de adicionar serviço */
 
+  async function showServico(id) {
+    const response = await api.get(`/services/${id}`);
+    setNameEditar(response.data.title);
+    setEstrelhasEditar(response.data.stars);
+    setValorEditar(response.data.valor);
+    setDuracaoEditar(response.data.duracao);
+    setServiceID(response.data.id);
 
-   async function showServico(id){
-    const response =  await api.get(`/services/${id}`);
-    setNameEditar(response.data.title)
-    setEstrelhasEditar(response.data.stars)
-    setValorEditar(response.data.valor)
-    setDuracaoEditar(response.data.duracao)
-    setServiceID(response.data.id)
-
-    setOpenModalEditarServico(true)
-
+    setOpenModalEditarServico(true);
   }
 
-  async function editarServico(){
-     await api.put(`/services/${serviceId}`, {
-      title: nameEditar,
-      stars: estrelhasEditar,
-      duracao: duracaoEditar,
-      valor: valorEditar
-    });
-    setOpenModalEditarServico(false)
-
-  }
-
-  async function excluirServico(id){
+  async function editarServico() {
     try {
-      await api.delete(`/services/${id}`)
-      setReloadServices(prevState => !prevState);
+      await api.put(`/services/${serviceId}`, {
+        title: nameEditar,
+        stars: estrelhasEditar,
+        duracao: duracaoEditar,
+        valor: valorEditar,
+      });
+      setOpenModalEditarServico(false);
+      setReloadServices((prevState) => !prevState);
+      return toast.success("Serviço editado com sucesso!", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } catch (error) {
+      return toast.error("Erro ao excluir serviço", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+  }
+
+  async function excluirServico(id) {
+    try {
+      await api.delete(`/services/${id}`);
+      setReloadServices((prevState) => !prevState);
       return toast.success("Serviço excluido com sucesso!", {
         position: "bottom-right",
         autoClose: 5000,
@@ -188,7 +209,7 @@ export function ServicosPainel() {
         progress: undefined,
         theme: "dark",
       });
-    } catch (error){
+    } catch (error) {
       return toast.error("Erro ao excluir serviço", {
         position: "bottom-right",
         autoClose: 5000,
@@ -204,12 +225,17 @@ export function ServicosPainel() {
 
   useEffect(() => {
     async function getServices() {
-      const response = await api.get(`/services`);
+      const response = await api.get(`/services?title=${search}`);
       setServices(response.data);
     }
 
     getServices();
-  }, [openModalAdicionarServico, openModalEditarServico, reloadServices]);
+  }, [
+    openModalAdicionarServico,
+    openModalEditarServico,
+    reloadServices,
+    search,
+  ]);
 
   return (
     <Container
@@ -229,7 +255,11 @@ export function ServicosPainel() {
                 onClick={() => setOpenModalAdicionarServico(true)}
               />
               <div className="w-full sm:w-2/6 flex gap-4">
-                <Input placeholder="Buscar" value={search} />
+                <Input
+                  placeholder="Buscar"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
                 <i className="icon-search">
                   <IoSearch />
                 </i>
@@ -238,26 +268,26 @@ export function ServicosPainel() {
 
             {/* Serção desktop */}
             <div className="header-servicos-tabela">
-              <div className="flex px-8 header-tabela">
-                <div className="w-40">
+              <div className="flex px-8 header-tabela pr-12">
+                <div className="w-40 flex items-center">
                   <h1>Imagem</h1>
                 </div>
-                <div className="w-52">
+                <div className="w-52 flex items-center">
                   <h1>Nome</h1>
                 </div>
-                <div className="w-40">
+                <div className="w-40 flex items-center">
                   <h1>Duração</h1>
                 </div>
-                <div className="w-40">
+                <div className="w-40 flex items-center">
                   <h1>Estrelas</h1>
                 </div>
-                <div className="w-40">
+                <div className="w-40 flex items-center" >
                   <h1>Valor</h1>
                 </div>
-                <div className="w-28">
+                <div className="w-28 flex items-center">
                   <h1>Editar</h1>
                 </div>
-                <div className="w-28">
+                <div className="w-28 flex items-center">
                   <h1>Excluir</h1>
                 </div>
               </div>
@@ -265,8 +295,8 @@ export function ServicosPainel() {
             <div className="servicos">
               {services.map((servico) => (
                 <div className="linha-servicos-tabela" key={servico?.id}>
-                  <div className="flex px-8 header-tabela">
-                    <div className="w-40 column-img flex items-center pl-0">
+                  <div className="flex px-6 header-tabela">
+                    <div className="w-40 column-img flex items-center">
                       <img src={imgService} />
                     </div>
                     <div className="w-52 flex items-center">
@@ -284,12 +314,18 @@ export function ServicosPainel() {
                       <h1>R$ {servico?.valor}</h1>
                     </div>
                     <div className="w-28 flex items-center">
-                      <i className="icon-orange cursor-pointer" onClick={() => showServico(servico?.id)}>
+                      <i
+                        className="icon-orange cursor-pointer"
+                        onClick={() => showServico(servico?.id)}
+                      >
                         <MdModeEdit />
                       </i>
                     </div>
                     <div className="w-28 flex items-center">
-                      <i className="icon-red cursor-pointer" onClick={() => excluirServico(servico?.id)}>
+                      <i
+                        className="icon-red cursor-pointer"
+                        onClick={() => excluirServico(servico?.id)}
+                      >
                         <FaTrashAlt />
                       </i>
                     </div>
@@ -300,42 +336,61 @@ export function ServicosPainel() {
             {/* Serção desktop */}
 
             <div className="conteiner-servicos-mobile">
-              <div className="card-servico-mobile">
-                <div className="img-servico">
-                  <img src={imgService} />
-                </div>
-                <div className="content-servico">
-                  <h1>Corte</h1>
-                  <div className="stars">
-                    <img src={starOrange} />
-                    <img src={starOrange} />
-                    <img src={starOrange} />
-                    <img src={starOrange} />
-                    <img src={starOrange} />
+              {services.map((servico) => (
+                <div className="card-servico-mobile">
+                  <div className="img-servico">
+                    <img src={imgService} />
                   </div>
-                  <p className="whitespace-nowrap overflow-hidden overflow-ellipsis w-42">
-                    Cortes para todos os tipos
-                  </p>
-                  <p>Valor: R$ 35,00</p>
+                  <div className="content-servico">
+                    <h1>{servico?.title}</h1>
+                    <div className="stars">
+                      {Array.from({ length: servico.stars }, (_, index) => (
+                        <img key={index} src={starOrange} alt="Estrela" />
+                      ))}
+                    </div>
+                    <p className="whitespace-nowrap overflow-hidden overflow-ellipsis w-42">
+                      {servico?.duracao} minutos
+                    </p>
+                    <p>Valor: R$ {servico?.valor}</p>
+                  </div>
+                  <div className="dots">
+                    <Dropdown className="dropdown-plug">
+                      <Dropdown.Item
+                        icon={MdModeEdit}
+                        onClick={() => showServico(servico?.id)}
+                      >
+                        Editar
+                      </Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item
+                        icon={FaTrashAlt}
+                        onClick={() => excluirServico(servico?.id)}
+                      >
+                        Excluir
+                      </Dropdown.Item>
+                    </Dropdown>
+                  </div>
                 </div>
-                <div className="dots">
-                  <img src={dots} />
-                </div>
-              </div>
+              ))}
             </div>
           </Section>
         </div>
       </div>
 
-      <Modal show={openModalAdicionarServico} size="7xl" onClose={onCloseModal} popup>
+      <Modal
+        show={openModalAdicionarServico}
+        size="7xl"
+        onClose={onCloseModal}
+        popup
+      >
         <Modal.Header />
         <Modal.Body>
           <div className="space-y-6">
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">
               Cadastrar serviço
             </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="order-2 md:order-none">
                 <div className="mb-4">
                   <FloatingLabel
                     variant="filled"
@@ -403,25 +458,32 @@ export function ServicosPainel() {
                   </Button>
                 </div>
               </div>
-              <div className="col-image">
+              <div className="col-image order-1 md:order-none">
                 <Label value="Imagem do serviço:" />
-                <img className="mt-4 max-w-md rounded-3xl" src={imgService} />
+                <img
+                  className="mt-4 max-w-full md:max-w-sm rounded-3xl"
+                  src={imgService}
+                />
               </div>
             </div>
           </div>
         </Modal.Body>
       </Modal>
 
-
-      <Modal show={openModalEditarServico} size="7xl" onClose={onCloseModal} popup>
+      <Modal
+        show={openModalEditarServico}
+        size="7xl"
+        onClose={onCloseModal}
+        popup
+      >
         <Modal.Header />
         <Modal.Body>
           <div className="space-y-6">
             <h3 className="text-xl font-medium text-gray-900 dark:text-white">
               Editar serviço
             </h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="order-2 md:order-none">
                 <div className="mb-4">
                   <FloatingLabel
                     variant="filled"
@@ -443,7 +505,6 @@ export function ServicosPainel() {
                     id="countries"
                     onChange={(e) => setEstrelhasEditar(e.target.value)}
                     value={estrelhasEditar}
-
                     required
                   >
                     <option>1</option>
@@ -461,7 +522,6 @@ export function ServicosPainel() {
                     onChange={(e) => setValorEditar(e.target.value)}
                     type="number"
                     value={valorEditar}
-
                   />
                 </div>
                 <div>
@@ -494,9 +554,12 @@ export function ServicosPainel() {
                   </Button>
                 </div>
               </div>
-              <div className="col-image">
+              <div className="col-image order-1 md:order-none">
                 <Label value="Imagem do serviço:" />
-                <img className="mt-4 max-w-md rounded-3xl" src={imgService} />
+                <img
+                  className="mt-4 max-w-full md:max-w-sm rounded-3xl"
+                  src={imgService}
+                />
               </div>
             </div>
           </div>

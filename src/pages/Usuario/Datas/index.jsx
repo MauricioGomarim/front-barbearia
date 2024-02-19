@@ -11,16 +11,94 @@ import { useState, useEffect } from "react";
 import { addDays, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../../hook/auth";
 
 export function Datas() {
   const [dias, setDias] = useState([]);
 
+  const { servicesSelectedHook } = useAuth();
   const [activeIndex, setActiveIndex] = useState(null);
+  const [diaSelecionado, setDiaSelected] = useState();
 
-  const handleSlideClick = (index) => {
+  const handleSlideClick = (data) => {
     // Atualiza o estado para o índice clicado
-    setActiveIndex(index);
+    setActiveIndex(data.id);
+    setDiaSelected(data);
   };
+
+  const horariosSemana = {
+    segunda: {
+      horario1: "08:00",
+      horario2: "09:00",
+      horario3: "10:00",
+      horario4: "11:00",
+      horario5: "12:00",
+      horario6: "13:00",
+      horario7: "14:00",
+      horario8: "15:00",
+      horario9: "18:00",
+    },
+    terca: {
+      horario1: "08:00",
+      horario2: "09:00",
+      horario3: "10:00",
+      horario4: "11:00",
+      horario5: "12:00",
+      horario6: "13:00",
+      horario7: "14:00",
+      horario8: "15:00",
+      horario9: "18:00",
+    },
+    quarta: {
+      horario1: "08:00",
+      horario2: "09:00",
+      horario3: "10:00",
+      horario4: "11:00",
+      horario5: "12:00",
+      horario6: "13:00",
+      horario7: "14:00",
+      horario8: "15:00",
+      horario9: "18:00",
+    },
+    quinta: {
+      horario1: "08:00",
+      horario2: "09:00",
+      horario3: "10:00",
+      horario4: "11:00",
+      horario5: "12:00",
+      horario6: "13:00",
+      horario7: "14:00",
+      horario8: "15:00",
+      horario9: "18:00",
+    },
+    sexta: {
+      horario1: "08:00",
+      horario2: "09:00",
+      horario3: "10:00",
+      horario4: "11:00",
+      horario5: "12:00",
+      horario6: "13:00",
+      horario7: "14:00",
+      horario8: "15:00",
+      horario9: "18:00",
+    },
+  };
+  const horariosFinalDeSemana = {
+    sábado: {
+      horario1: "08:00",
+      horario2: "09:00",
+      horario3: "10:00",
+      horario4: "11:00",
+      horario5: "12:00",
+    },
+  };
+
+  const diaSemanaCorrigido = diaSelecionado?.diaDaSemana?.replace(/ç/g, "c");
+  const horariosDiaSelecionadoSemana = diaSemanaCorrigido
+    ? horariosSemana[diaSemanaCorrigido.toLowerCase()]
+    : [];
+  const horariosDiaSelecionadoSabado =
+    horariosFinalDeSemana[diaSelecionado?.diaDaSemana.toLowerCase()];
 
   useEffect(() => {
     const hoje = new Date();
@@ -31,16 +109,32 @@ export function Datas() {
       const formatoDia = format(dia, "dd", { locale: ptBR });
       const nomeMes = format(dia, "MMMM", { locale: ptBR });
       const diaDaSemana = format(dia, "eee", { locale: ptBR });
-      trintaDias.push({ data: formatoDia, nomeMes, diaDaSemana });
+      trintaDias.push({ data: formatoDia, nomeMes, diaDaSemana, id: i });
     }
 
+    const dia = hoje;
+    const formatoDia = format(dia, "dd", { locale: ptBR });
+    const nomeMes = format(dia, "MMMM", { locale: ptBR });
+    const diaDaSemana = format(dia, "eee", { locale: ptBR });
+
+    const diaInicialValue = {
+      data: formatoDia,
+      nomeMes: nomeMes,
+      diaDaSemana: diaDaSemana,
+    };
+    setDiaSelected(diaInicialValue);
+
     setDias(trintaDias);
+  }, []);
+
+  useEffect(() => {
+ 
   }, []);
 
   return (
     <Container className="relative h-full">
       <div className="seta z-10 relative">
-        <Link to="/">
+        <Link to="/servicos">
           <img src={seta} />
         </Link>
       </div>
@@ -76,19 +170,19 @@ export function Datas() {
                   spaceBetween: 20,
                 },
               }}
-              onSwiper={(swiper) => console.log(swiper)}
+              onSwiper={(swiper) => console.log("teste")}
               onSlideChange={() => console.log("slide change")}
             >
               {dias.map((item, index) => (
                 <SwiperSlide
-                  key={index}
+                  key={item.id}
                   className={`data ${
                     activeIndex === index ||
                     (index === 0 && activeIndex === null)
                       ? "active"
                       : ""
                   }`}
-                  onClick={() => handleSlideClick(index)}
+                  onClick={() => handleSlideClick(item)}
                 >
                   <h2>{item.data}</h2>
                   <p>{item.diaDaSemana}</p>
@@ -98,15 +192,28 @@ export function Datas() {
           </div>
 
           <div className="horarios">
-            <div className="horario">
-              <p>08:00 AM</p>
-              <Botao text="Confirmar" />
-            </div>
-
-            <div className="horario">
-              <p>10:00 AM</p>
-              <Botao text="Confirmar" />
-            </div>
+            {diaSelecionado &&
+              (diaSelecionado.diaDaSemana.toLowerCase() === "sábado" ? (
+                horariosDiaSelecionadoSabado &&
+                Object.entries(horariosDiaSelecionadoSabado).map((horario) => (
+                  <div className="horario" key={horario[0]}>
+                    <p>{horario[1]}</p>
+                    <Botao text="Confirmar" />
+                  </div>
+                ))
+              ) : diaSelecionado.diaDaSemana.toLowerCase() === "domingo" ? (
+                <div className="horario">
+                  <p>Nenhum horario para domingo!</p>
+                </div>
+              ) : (
+                horariosDiaSelecionadoSemana &&
+                Object.entries(horariosDiaSelecionadoSemana).map((horario) => (
+                  <div className="horario" key={horario[0]}>
+                    <p>{horario[1]}</p>
+                    <Botao text="Confirmar" />
+                  </div>
+                ))
+              ))}
           </div>
         </div>
       </Content>

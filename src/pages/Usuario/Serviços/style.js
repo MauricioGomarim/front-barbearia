@@ -21,10 +21,26 @@ export const Container = styled.div`
 export const Content = styled.div`
   width: 80%;
   margin: 0 auto;
-  padding: 50px 0;
+
+  .error-services {
+    font-weight: 800;
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    h1 {
+      font-size: 42px;
+    }
+  }
+  .active {
+    opacity: 1 !important;
+    filter: grayscale(0) !important;
+  }
   .select-profissional {
     display: flex;
     flex-direction: column;
+    margin-bottom: 50px;
 
     h1 {
       font-size: 25px;
@@ -36,12 +52,15 @@ export const Content = styled.div`
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
+      cursor: pointer;
 
       .profissional {
         display: flex;
         align-items: center;
         gap: 20px;
         transition: all 0.5s ease;
+        opacity: 0.5;
+        filter: grayscale(1);
 
         img {
           max-width: 100px;
@@ -61,6 +80,7 @@ export const Content = styled.div`
   .btnConfirmar {
     display: flex;
     justify-content: flex-end;
+    padding-bottom: 50px;
   }
 
   .select-services {
@@ -68,6 +88,7 @@ export const Content = styled.div`
       font-size: 25px;
       font-weight: 700;
       margin-bottom: 30px;
+      
     }
   }
 

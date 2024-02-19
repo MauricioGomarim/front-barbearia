@@ -10,7 +10,7 @@ function AuthProvider({ children }) {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(0);
   const [menuActive, setMenuActive] = useState(false)
-
+  const [servicesSelectedHook, setServicesSelectedHook] = useState([]);
   async function signIn(login, password) {
 
     try {
@@ -98,7 +98,7 @@ function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, user: data.user, Logout, setLoading, loading, setMenuActive, menuActive }}
+      value={{ signIn, user: data.user, Logout, setLoading, loading, setMenuActive, menuActive, setServicesSelectedHook, servicesSelectedHook }}
     >
       {children}
     </AuthContext.Provider>

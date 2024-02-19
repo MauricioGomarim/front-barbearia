@@ -29,6 +29,8 @@ export const Container = styled.div`
   .content {
     grid-area: content;
     background-color: #f8f8f8;
+    overflow-y: auto;
+    padding-bottom: 30px;
   }
   .conteudo {
     max-width: 1200px;

@@ -164,6 +164,7 @@ export function Perfil() {
                   title="Descrição"
                   onChange={(e) => setDescricao(e.target.value)}
                   value={descricao}
+                  className="border-none"
                 />
               </div>
               <div className="botao col-span-2">

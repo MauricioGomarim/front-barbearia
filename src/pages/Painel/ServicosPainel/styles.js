@@ -34,6 +34,7 @@ export const Container = styled.div`
     grid-area: content;
     background-color: #f8f8f8;
     padding-bottom: 100px;
+    overflow-y: auto;
   }
   .conteudo {
     max-width: 1200px;
@@ -140,7 +141,7 @@ export const Section = styled.div`
   .stars {
     display: flex;
     gap: 2px;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
   }
 
   .icon-search {
@@ -199,8 +200,8 @@ export const Section = styled.div`
       right: 10px;
       top: 10px;
       border-radius: 10px;
-      height: 35px;
-      width: 50px;
+      height: 25px;
+      width: 30px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -236,12 +237,14 @@ export const Section = styled.div`
 
       h1 {
         color: ${({ theme }) => theme.COLORS.WHITE};
-        font-size: 20px;
+        font-size: 16px;
+        max-width: 140px;
       }
 
       p {
         font-weight: 600;
         color: #fff;
+        font-size: 15px;
       }
     }
   }
