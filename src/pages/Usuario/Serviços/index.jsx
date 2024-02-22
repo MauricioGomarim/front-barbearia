@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import { api } from "../../../services/api";
 import { useNavigate } from "react-router-dom";
 
+import { toast } from "react-toastify";
+
 import imgPerfil from "../../../assets/img-perfil.png";
 
 import { useEffect, useState } from "react";
@@ -40,8 +42,22 @@ export function Servicos() {
   };
 
   const confirmService = () => {
-    setServicesSelectedHook(servicesSelected)
-    navigation("/datas");
+    if(servicesSelected.length > 0) {
+      setServicesSelectedHook(servicesSelected)
+      navigation("/datas");
+    } else {
+      return toast.warning("Selecione pelo menos 1 serviço..", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    }
+
   }
 
   useEffect(() => {
