@@ -16,10 +16,6 @@ import { Solicitacoes } from '../pages/Painel/Solicitacoes'
 import { Agendamentos } from '../pages/Painel/Agendamentos'
 
 
-
-
-
-
 import { Header } from "../components/Header/index.jsx";
 import { Footer } from "../components/Footer/index.jsx";
 import { HeaderPainel } from "../components/HeaderPainel";
