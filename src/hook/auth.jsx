@@ -10,7 +10,7 @@ function AuthProvider({ children }) {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(0);
   const [menuActive, setMenuActive] = useState(false)
-
+  const [servicesSelectedHook, setServicesSelectedHook] = useState([]);
   async function signIn(login, password) {
 
     try {
@@ -26,7 +26,7 @@ function AuthProvider({ children }) {
       // Adicionando o token do tipo bearer de authorization por padrão de todas requisições
       api.defaults.headers.authorization = `Bearer ${token}`;
       setLoading(0);
-      return toast.success("Logado por sucesso!", {
+      return toast.success("Logado com sucesso!", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -74,7 +74,7 @@ function AuthProvider({ children }) {
     localStorage.removeItem("@sistema-barbearia:token");
     localStorage.removeItem("@sistema-barbearia:user");
     setData({});
-    return toast.success("Sessão encerrada..", {
+    return toast.success("Sessão encerrada...", {
       position: "bottom-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -98,7 +98,7 @@ function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ signIn, user: data.user, Logout, setLoading, loading, setMenuActive, menuActive }}
+      value={{ signIn, user: data.user, Logout, setLoading, loading, setMenuActive, menuActive, setServicesSelectedHook, servicesSelectedHook }}
     >
       {children}
     </AuthContext.Provider>

@@ -4,12 +4,11 @@ export const Container = styled.div`
   display: grid;
   grid-template-columns: 250px auto;
   grid-template-rows: auto 90vh;
-  grid-template-areas: 'header header' 'menu content';
+  grid-template-areas: "header header" "menu content";
   transition: all 0.5s ease;
 
-  
-  @media (max-width: 768px){
-      .foto-perfil {
+  @media (max-width: 768px) {
+    .foto-perfil {
       width: 100% !important;
       display: flex;
       justify-content: center;
@@ -18,8 +17,8 @@ export const Container = styled.div`
     form {
       width: 100% !important;
     }
-      grid-template-rows: auto auto !important;
-    }
+    grid-template-rows: auto auto !important;
+  }
 
   .botao {
     display: flex;
@@ -29,8 +28,9 @@ export const Container = styled.div`
   }
   .content {
     grid-area: content;
-    background-color: #F8F8F8;
-
+    background-color: #f8f8f8;
+    overflow-y: auto;
+    padding-bottom: 30px;
   }
   .conteudo {
     max-width: 1200px;
@@ -48,12 +48,11 @@ export const Container = styled.div`
       width: 20%;
     }
     form {
-    width: 75%;
-    height: fit-content;
-    display: flex;
-    flex-wrap: wrap;
+      width: 75%;
+      height: fit-content;
+      display: flex;
+      flex-wrap: wrap;
     }
-
   }
   .conteudo h1 {
     font-weight: 700;
@@ -67,6 +66,7 @@ export const Container = styled.div`
 
   .conteudo .formulario img {
     max-width: 250px;
+    width: 100%;
     border-radius: 50px;
   }
 `;

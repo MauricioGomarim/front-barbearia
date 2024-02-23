@@ -10,10 +10,10 @@ export function HamburguerPainel() {
     setMenuActive(!menuActive);
   }
   return (
-    <div onClick={handleMenu} className="menu-burguer-painel">
+    <div  className="menu-burguer-painel">
       <nav role="navigation">
         <div id="menuToggle">
-          <input type="checkbox" checked={menuActive} />
+          <input type="checkbox" checked={menuActive} onClick={() => handleMenu()}/>
           <span></span>
           <span></span>
           <span></span>

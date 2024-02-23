@@ -29,8 +29,6 @@ import { useAuth } from "../hook/auth.jsx";
 export function AppRoutes(){
 
     const { user } = useAuth();
-
-    console.log(user)
     return (
         <Routes>
             <Route path="/login" element={user ? (user.isBarbeiro ? <Dashboard /> : <><Header /><Home /><Footer /></>) : <SignIn />} />   

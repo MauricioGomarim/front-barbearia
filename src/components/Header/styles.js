@@ -68,7 +68,7 @@ export const Content = styled.div`
       .login a {
         background-color: #ffffff0d;
         border-radius: 10px;
-        padding: 8px 10px;
+        padding: 8px 7px;
         font-size: 12px;
         text-transform: uppercase;
       }
