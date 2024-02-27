@@ -12,19 +12,118 @@ import { addDays, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../hook/auth";
+import { toast } from "react-toastify";
+import { api } from "../../../services/api";
+
+
 
 export function Datas() {
   const [dias, setDias] = useState([]);
 
-  const { servicesSelectedHook } = useAuth();
+  const { servicesSelectedHook, user, barbeiro } = useAuth();
   const [activeIndex, setActiveIndex] = useState(null);
   const [diaSelecionado, setDiaSelected] = useState();
+  const [reservasExistentes, setReservasExistentes] = useState(dias[0]);
+
+
+
 
   const handleSlideClick = (data) => {
     // Atualiza o estado para o índice clicado
     setActiveIndex(data.id);
     setDiaSelected(data);
+    serchHorarioReservado(data)
   };
+
+  async function serchHorarioReservado(dataSelecionada) {
+
+    try {
+      const response = await api.get(`/reserva/search?dia=${dataSelecionada.dia}&mes=${dataSelecionada.nomeMes}`);
+      setReservasExistentes(response.data)
+
+      return
+    } catch (error) {
+      if (error.response) {
+        return toast.warning(error.response.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        toast.error("Erro ao criar serviço!", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
+    }
+  }
+
+
+  async function confirmReserva(horario) {
+
+
+    const services = servicesSelectedHook.map((service) => {
+      return service.id
+    })
+    const data_hora_reserva = `${diaSelecionado.dia}/${diaSelecionado.nomeMes} - ${horario}`
+
+
+    try {
+      await api.post(`/reserva`, {
+        user_id: user.id,
+        id_barbeiro_select: barbeiro,
+        id_services: services,
+        data_hora_reserva,
+        
+      });
+      return toast.success("Serviço adicionado com sucesso!", {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
+    } catch (error) {
+      if (error.response) {
+        return toast.warning(error.response.data.message, {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      } else {
+        toast.error("Erro ao criar serviço!", {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }
+    }
+  }
+ 
 
   const horariosSemana = {
     segunda: {
@@ -109,7 +208,7 @@ export function Datas() {
       const formatoDia = format(dia, "dd", { locale: ptBR });
       const nomeMes = format(dia, "MMMM", { locale: ptBR });
       const diaDaSemana = format(dia, "eee", { locale: ptBR });
-      trintaDias.push({ data: formatoDia, nomeMes, diaDaSemana, id: i });
+      trintaDias.push({ dia: formatoDia, nomeMes, diaDaSemana, id: i });
     }
 
     const dia = hoje;
@@ -118,18 +217,21 @@ export function Datas() {
     const diaDaSemana = format(dia, "eee", { locale: ptBR });
 
     const diaInicialValue = {
-      data: formatoDia,
+      dia: formatoDia,
       nomeMes: nomeMes,
       diaDaSemana: diaDaSemana,
     };
     setDiaSelected(diaInicialValue);
 
     setDias(trintaDias);
+
   }, []);
 
   useEffect(() => {
- 
-  }, []);
+    if (dias.length > 0) {
+      serchHorarioReservado(dias[0]);
+    }
+  }, [dias]);
 
   return (
     <Container className="relative h-full">
@@ -170,7 +272,7 @@ export function Datas() {
                   spaceBetween: 20,
                 },
               }}
-              onSwiper={(swiper) => console.log("teste")}
+              onSwiper={(swiper) => ''}
               onSlideChange={() => console.log("slide change")}
             >
               {dias.map((item, index) => (
@@ -184,7 +286,7 @@ export function Datas() {
                   }`}
                   onClick={() => handleSlideClick(item)}
                 >
-                  <h2>{item.data}</h2>
+                  <h2>{item.dia}</h2>
                   <p>{item.diaDaSemana}</p>
                 </SwiperSlide>
               ))}
@@ -198,7 +300,7 @@ export function Datas() {
                 Object.entries(horariosDiaSelecionadoSabado).map((horario) => (
                   <div className="horario" key={horario[0]}>
                     <p>{horario[1]}</p>
-                    <Botao text="Confirmar" />
+                    <Botao text="Confirmar" onClick={() => confirmReserva(horario[1])}/>
                   </div>
                 ))
               ) : diaSelecionado.diaDaSemana.toLowerCase() === "domingo" ? (
@@ -210,7 +312,7 @@ export function Datas() {
                 Object.entries(horariosDiaSelecionadoSemana).map((horario) => (
                   <div className="horario" key={horario[0]}>
                     <p>{horario[1]}</p>
-                    <Botao text="Confirmar" />
+                    <Botao text="Confirmar" onClick={() => confirmReserva(horario[1])}/>
                   </div>
                 ))
               ))}

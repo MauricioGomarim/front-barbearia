@@ -22,9 +22,9 @@ export function Servicos() {
   const [profissionalAtivo, setProfissionalAtivo] = useState(1);
   const [services, setServices] = useState([]);
   const [servicesSelected, setServicesSelected] = useState([]);
-  const {setServicesSelectedHook} = useAuth()
+  const { setServicesSelectedHook, setBarbeiro } = useAuth();
   const navigation = useNavigate();
-  
+
   const handleServicesSelected = (service) => {
     // Verifica se o serviço já foi selecionado antes de adicioná-lo
     if (
@@ -36,14 +36,14 @@ export function Servicos() {
     }
   };
   const handleProfissionalClick = (id) => {
- 
     setProfissionalAtivo(id);
     setServicesSelected([]);
   };
 
   const confirmService = () => {
-    if(servicesSelected.length > 0) {
-      setServicesSelectedHook(servicesSelected)
+    if (servicesSelected.length > 0) {
+      setServicesSelectedHook(servicesSelected);
+      setBarbeiro(profissionalAtivo)
       navigation("/datas");
     } else {
       return toast.warning("Selecione pelo menos 1 serviço..", {
@@ -57,8 +57,7 @@ export function Servicos() {
         theme: "dark",
       });
     }
-
-  }
+  };
 
   useEffect(() => {
     async function getServices() {
@@ -89,10 +88,10 @@ export function Servicos() {
           <div className="profissionais">
             {barbeiros?.map((barbeiro) => (
               <div
+                key={barbeiro.id}
                 className={`profissional ${
                   profissionalAtivo === barbeiro.id ? "active" : ""
                 }`}
-                key={barbeiro.id}
                 onClick={() => handleProfissionalClick(barbeiro.id)}
               >
                 <img src={imgPerfil} alt={`Imagem de ${barbeiro.name}`} />
@@ -109,7 +108,7 @@ export function Servicos() {
             <h1>Selecione os serviços desejados:</h1>
             <div className="services">
               {services.map((service) => (
-                <div className="service">
+                <div key={service.id} className="service">
                   <img src={serviceImg} />
                   <div className="infos">
                     <h1>{service.title}</h1>
