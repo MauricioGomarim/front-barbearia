@@ -5,7 +5,7 @@ export const Container = styled.div`
 
 
 `
-export const Button = styled.a`
+export const Button = styled.button`
         background-color: ${({ theme }) => theme.COLORS.ORANGE};
         border: 1px solid ${({ theme }) => theme.COLORS.ORANGE};
         color: ${({ theme }) => theme.COLORS.BASE};

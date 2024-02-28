@@ -15,33 +15,31 @@ import { useAuth } from "../../../hook/auth";
 import { toast } from "react-toastify";
 import { api } from "../../../services/api";
 
-
-
 export function Datas() {
   const [dias, setDias] = useState([]);
 
   const { servicesSelectedHook, user, barbeiro } = useAuth();
   const [activeIndex, setActiveIndex] = useState(null);
   const [diaSelecionado, setDiaSelected] = useState();
-  const [reservasExistentes, setReservasExistentes] = useState(dias[0]);
+  const [reservasExistentes, setReservasExistentes] = useState([]);
 
-
-
+  console.log(diaSelecionado);
 
   const handleSlideClick = (data) => {
     // Atualiza o estado para o índice clicado
     setActiveIndex(data.id);
     setDiaSelected(data);
-    serchHorarioReservado(data)
+    serchHorarioReservado(data);
   };
 
   async function serchHorarioReservado(dataSelecionada) {
-
     try {
-      const response = await api.get(`/reserva/search?dia=${dataSelecionada.dia}&mes=${dataSelecionada.nomeMes}`);
-      setReservasExistentes(response.data)
+      const response = await api.get(
+        `/reserva/search?dia=${dataSelecionada.dia}&mes=${dataSelecionada.nomeMes}`
+      );
+      setReservasExistentes(response.data);
 
-      return
+      return;
     } catch (error) {
       if (error.response) {
         return toast.warning(error.response.data.message, {
@@ -69,25 +67,23 @@ export function Datas() {
     }
   }
 
-
   async function confirmReserva(horario) {
-
-
     const services = servicesSelectedHook.map((service) => {
-      return service.id
-    })
-    const data_hora_reserva = `${diaSelecionado.dia}/${diaSelecionado.nomeMes} - ${horario}`
-
+      return service.id;
+    });
 
     try {
       await api.post(`/reserva`, {
         user_id: user.id,
         id_barbeiro_select: barbeiro,
         id_services: services,
-        data_hora_reserva,
-        
+        dia_reserva: diaSelecionado.dia,
+        mes_reserva: diaSelecionado.nomeMes,
+        hora_reserva: horario,
       });
-      return toast.success("Serviço adicionado com sucesso!", {
+
+      serchHorarioReservado(diaSelecionado);
+      return toast.success("Solicitação de reserva enviada!", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -123,7 +119,6 @@ export function Datas() {
       }
     }
   }
- 
 
   const horariosSemana = {
     segunda: {
@@ -224,14 +219,13 @@ export function Datas() {
     setDiaSelected(diaInicialValue);
 
     setDias(trintaDias);
-
   }, []);
 
   useEffect(() => {
     if (dias.length > 0) {
-      serchHorarioReservado(dias[0]);
+      serchHorarioReservado(diaSelecionado);
     }
-  }, [dias]);
+  }, [diaSelecionado]);
 
   return (
     <Container className="relative h-full">
@@ -272,7 +266,7 @@ export function Datas() {
                   spaceBetween: 20,
                 },
               }}
-              onSwiper={(swiper) => ''}
+              onSwiper={(swiper) => ""}
               onSlideChange={() => console.log("slide change")}
             >
               {dias.map((item, index) => (
@@ -297,24 +291,66 @@ export function Datas() {
             {diaSelecionado &&
               (diaSelecionado.diaDaSemana.toLowerCase() === "sábado" ? (
                 horariosDiaSelecionadoSabado &&
-                Object.entries(horariosDiaSelecionadoSabado).map((horario) => (
-                  <div className="horario" key={horario[0]}>
-                    <p>{horario[1]}</p>
-                    <Botao text="Confirmar" onClick={() => confirmReserva(horario[1])}/>
-                  </div>
-                ))
+                Object.entries(horariosDiaSelecionadoSabado).map((horario) => {
+                  // Verificar se o horário atual está reservado para o dia e mês selecionados
+                  const horarioReservado = reservasExistentes.some(
+                    (reserva) =>
+                      reserva.hora_reserva === horario[1] &&
+                      reserva.dia_reserva === diaSelecionado.dia &&
+                      reserva.mes_reserva === diaSelecionado.nomeMes
+                  );
+                  return (
+                    <>
+                    {horarioReservado ? (
+                    <div className="horario botao-reservado" key={horario[0]}>
+                      <p>{horario[1]}</p>
+                        <Botao text="Reservado" className="!bg-stone-950 !text-slate-300" disabled  onClick={() => confirmReserva(horario[1])}/>
+                        </div>
+                      ) : (
+                        <div className="horario" key={horario[0]}>
+                        <p>{horario[1]}</p>
+                        <Botao
+                          text="Confirmar"
+                          onClick={() => confirmReserva(horario[1])}
+                        />
+                        </div>
+                      )}
+                    </>
+                  );
+                })
               ) : diaSelecionado.diaDaSemana.toLowerCase() === "domingo" ? (
                 <div className="horario">
-                  <p>Nenhum horario para domingo!</p>
+                  <p>Nenhum horário disponível para domingo!</p>
                 </div>
               ) : (
                 horariosDiaSelecionadoSemana &&
-                Object.entries(horariosDiaSelecionadoSemana).map((horario) => (
-                  <div className="horario" key={horario[0]}>
-                    <p>{horario[1]}</p>
-                    <Botao text="Confirmar" onClick={() => confirmReserva(horario[1])}/>
-                  </div>
-                ))
+                Object.entries(horariosDiaSelecionadoSemana).map((horario) => {
+                  // Verificar se o horário atual está reservado para o dia e mês selecionados
+                  const horarioReservado = reservasExistentes.some(
+                    (reserva) =>
+                      reserva.hora_reserva === horario[1] &&
+                      reserva.dia_reserva === diaSelecionado.dia &&
+                      reserva.mes_reserva === diaSelecionado.nomeMes
+                  );
+                  return (
+                    <>
+                    {horarioReservado ? (
+                    <div className="horario botao-reservado" key={horario[0]}>
+                      <p>{horario[1]}</p>
+                        <Botao text="Reservado" className="!bg-stone-950 !text-slate-300" disabled  onClick={() => confirmReserva(horario[1])}/>
+                        </div>
+                      ) : (
+                        <div className="horario" key={horario[0]}>
+                        <p>{horario[1]}</p>
+                        <Botao
+                          text="Confirmar"
+                          onClick={() => confirmReserva(horario[1])}
+                        />
+                        </div>
+                      )}
+                    </>
+                  );
+                })
               ))}
           </div>
         </div>
