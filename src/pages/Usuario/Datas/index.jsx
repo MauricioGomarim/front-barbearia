@@ -17,13 +17,11 @@ import { api } from "../../../services/api";
 
 export function Datas() {
   const [dias, setDias] = useState([]);
-
   const { servicesSelectedHook, user, barbeiro } = useAuth();
   const [activeIndex, setActiveIndex] = useState(null);
   const [diaSelecionado, setDiaSelected] = useState();
   const [reservasExistentes, setReservasExistentes] = useState([]);
-
-  console.log(diaSelecionado);
+  
 
   const handleSlideClick = (data) => {
     // Atualiza o estado para o índice clicado
