@@ -28,7 +28,7 @@ import { useAuth } from "../hook/auth.jsx";
 
 export function AppRoutes(){
 
-    const { user } = useAuth();
+    const { user, servicesSelectedHook } = useAuth();
     return (
         <Routes>
             <Route path="/login" element={user ? (user.isBarbeiro ? <Dashboard /> : <><Header /><Home /><Footer /></>) : <SignIn />} />   
@@ -41,7 +41,7 @@ export function AppRoutes(){
             <Route path="/gerenciar-servicos" element={ user?.isBarbeiro ? <Gerenciar_servicos />  : <Not_found />} />
 
             <Route path="/" element={<><Header /><Home /> <Footer /></>} />
-            <Route path="/datas" element={<><Header /><Datas /><Footer /></>} />
+            <Route path="/datas" element={servicesSelectedHook != '' ? <><Header /><Datas /><Footer /></> : <><Header />< Servicos/><Footer /></>} />
             <Route path="/servicos" element={<><Header /><Servicos /><Footer /></>} />
 
             <Route path="*" element={<Not_found />} />

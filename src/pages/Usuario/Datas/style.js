@@ -2,6 +2,9 @@ import styled from "styled-components";
 import bg from "../../../assets/img2.jpg";
 
 export const Container = styled.div`
+.botao-reservado {
+  opacity: 0.3;
+}
   .background {
     background-image: url(${bg});
     background-repeat: no-repeat;
