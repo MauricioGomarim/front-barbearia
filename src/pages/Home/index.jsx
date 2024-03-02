@@ -2,7 +2,7 @@ import { Container, Content } from "./style";
 import { Botao } from "../../components/Botao";
 
 import barberpool from "../../assets/babershop.png";
-
+import { Link } from "react-router-dom";
 import image from "../../assets/image-sec1.png";
 
 export function Home() {
@@ -15,11 +15,11 @@ export function Home() {
               <h1 className="text-center text-3xl sm:text-5xl sm:text-left mb-5">
                 FAÇA SEU AGENDAMENTO AGORA MESMO !
               </h1>
-              <Botao
+              <Link
                 text="Fazer reserva"
-                className="flex max-w-80 text-3xl mb-5 sm:justify-center md:justify-start lg:justify-start"
-                href="/servicos"
-              />
+                className="button-s flex max-w-80 text-3xl mb-5 sm:justify-center md:justify-start lg:justify-start"
+                to="/servicos"
+              >Fazer reserva</Link>
             </div>
             <div className="sm:w-full md:w-1/2">
               <img src={image} />

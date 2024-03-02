@@ -7,12 +7,77 @@ import { useAuth } from "../../hook/auth.jsx";
 import { Link } from "react-router-dom";
 import { BsScissors, BsGrid3X3GapFill } from "react-icons/bs";
 import { IoMdLogOut } from "react-icons/io";
+import { Modal } from 'flowbite-react';
+import { InputField } from "../../components/InputField";
+import imgSenha from "../../assets/olho-1.svg";
+import imgSenha2 from "../../assets/olho-2.svg";
+import { Botao } from "../../components/Botao";
+
+import Zoom from '@mui/material/Zoom';
+import Box from '@mui/material/Box';
 
 export function Header() {
   const [menuAtivo, setMenuAtivo] = useState(false);
   const { Logout, user } = useAuth();
   const dropdownRef = useRef(null);
   const perfilImageRef = useRef(null);
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const [login, setLogin] = useState();
+  const [password, setPassword] = useState();
+  const {signIn, setLoading, loading } = useAuth();
+
+  const [hasValue, setHasValue] = useState(false);
+  const [maskActive, setMaskActive] = useState(true);
+  const [hasFocusLogin, setHasFocusLogin] = useState(false);
+  const [hasFocusPassword, setHasFocusPassword] = useState(false);
+
+  function onCloseModal() {
+    setOpenModal(false);
+    setEmail('');
+  }
+
+  const handleMask = () => {
+    setMaskActive(!maskActive);
+  };
+
+  function handleSignIn() {
+    if (!login) {
+      return toast.warn("Preencha o campo de login!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    if (!password) {
+      return toast.warn("Preencha o campo da senha!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    const retorno = signIn(login, password);
+
+retorno.then(result => {
+  if (result.success) {
+    setOpenModal(false) // Sucesso
+  }
+});
+    setLoading(1);
+  }
 
   function LogoutFunc() {
     Logout();
@@ -132,7 +197,7 @@ export function Header() {
             ) : (
               <ul className="!border-none !pb-0">
                 <li className="login">
-                  <a className="button-perfil" href="/login">
+                  <a className="button-perfil" onClick={() => setOpenModal(true)}>
                     Fazer login
                   </a>
                 </li>
@@ -155,6 +220,61 @@ export function Header() {
           </div>
         </div>
       </Content>
+      <Modal show={openModal} size="md" onClose={onCloseModal} popup>
+        <Box>
+      <Zoom in={openModal}>teste</Zoom>
+      </Box>
+       <Modal.Body className="container-login ">
+       <Modal.Header />
+        
+       <h1>Faça login</h1>
+       <div className="container-input">
+         <InputField
+           type="text"
+           onChange={(e) => setLogin(e.target.value)}
+           onFocus={() => setHasFocusLogin(true)}
+           onBlur={() => setHasFocusLogin(false)}
+         />
+         <label
+           className={`label ${login || hasFocusLogin ? "inputHasValue" : ""}`}
+         >
+           Email
+         </label>
+       </div>
+       <div className="container-input">
+         <InputField
+           type={`${maskActive ? 'password' : 'text'}`}
+           onChange={(e) => setPassword(e.target.value)}
+           onFocus={() => setHasFocusPassword(true)}
+           onBlur={() => setHasFocusPassword(false)}
+         />
+         <label
+           className={`label ${
+             password || hasFocusPassword ? "inputHasValue" : ""
+           }`}
+         >
+           Senha
+         </label>
+         {maskActive == true ? (
+           <img src={imgSenha} alt="Imagem Senha" onClick={handleMask} />
+         ) : (
+           <img src={imgSenha2} alt="Imagem Senha" onClick={handleMask} />
+         )}
+       </div>
+
+       <a href="/">Esqueceu sua senha?</a>
+       <Botao
+         className="!py-2 text-sm mb-4 w-full"
+         text="Entrar"
+         type="button"
+         onClick={handleSignIn}
+       />
+       <p>
+         Não tem uma conta? <a href="/register">Cadastre-se!</a>
+       </p>
+      
+       </Modal.Body>
+     </Modal>
     </Container>
   );
 }

@@ -1,5 +1,9 @@
 import { Container, Content } from "./style";
 import seta from "../../../assets/seta-esquerda.svg";
+import { InputField } from "../../../components/InputField";
+import imgSenha from "../../../assets/olho-1.svg";
+import imgSenha2 from "../../../assets/olho-2.svg";
+
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -15,13 +19,73 @@ import { useAuth } from "../../../hook/auth";
 import { toast } from "react-toastify";
 import { api } from "../../../services/api";
 
+import Zoom from '@mui/material/Zoom';
+
+import { Modal } from 'flowbite-react';
+
 export function Datas() {
   const [dias, setDias] = useState([]);
   const { servicesSelectedHook, user, barbeiro } = useAuth();
   const [activeIndex, setActiveIndex] = useState(null);
   const [diaSelecionado, setDiaSelected] = useState();
   const [reservasExistentes, setReservasExistentes] = useState([]);
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const [login, setLogin] = useState();
+  const [password, setPassword] = useState();
+  const {signIn, setLoading, loading } = useAuth();
+
+  const [hasValue, setHasValue] = useState(false);
+  const [maskActive, setMaskActive] = useState(true);
+  const [hasFocusLogin, setHasFocusLogin] = useState(false);
+  const [hasFocusPassword, setHasFocusPassword] = useState(false);
   
+  function onCloseModal() {
+    setOpenModal(false);
+    setEmail('');
+  }
+
+  const handleMask = () => {
+    setMaskActive(!maskActive);
+  };
+
+  function handleSignIn() {
+    if (!login) {
+      return toast.warn("Preencha o campo de login!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    if (!password) {
+      return toast.warn("Preencha o campo da senha!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+
+    const retorno = signIn(login, password);
+
+retorno.then(result => {
+  if (result.success) {
+    setOpenModal(false) // Sucesso
+  }
+});
+    setLoading(1);
+  }
 
   const handleSlideClick = (data) => {
     // Atualiza o estado para o índice clicado
@@ -69,6 +133,11 @@ export function Datas() {
     const services = servicesSelectedHook.map((service) => {
       return service.id;
     });
+
+    if(!user) {
+      return setOpenModal(true);
+    
+    }
 
     try {
       await api.post(`/reserva`, {
@@ -352,6 +421,62 @@ export function Datas() {
               ))}
           </div>
         </div>
+
+        
+        <Modal show={openModal} size="md" onClose={onCloseModal} popup>
+       
+        <Modal.Body className="container-login ">
+        <Modal.Header />
+         
+        <h1>Faça login</h1>
+        <div className="container-input">
+          <InputField
+            type="text"
+            onChange={(e) => setLogin(e.target.value)}
+            onFocus={() => setHasFocusLogin(true)}
+            onBlur={() => setHasFocusLogin(false)}
+          />
+          <label
+            className={`label ${login || hasFocusLogin ? "inputHasValue" : ""}`}
+          >
+            Email
+          </label>
+        </div>
+        <div className="container-input">
+          <InputField
+            type={`${maskActive ? 'password' : 'text'}`}
+            onChange={(e) => setPassword(e.target.value)}
+            onFocus={() => setHasFocusPassword(true)}
+            onBlur={() => setHasFocusPassword(false)}
+          />
+          <label
+            className={`label ${
+              password || hasFocusPassword ? "inputHasValue" : ""
+            }`}
+          >
+            Senha
+          </label>
+          {maskActive == true ? (
+            <img src={imgSenha} alt="Imagem Senha" onClick={handleMask} />
+          ) : (
+            <img src={imgSenha2} alt="Imagem Senha" onClick={handleMask} />
+          )}
+        </div>
+
+        <a href="/">Esqueceu sua senha?</a>
+        <Botao
+          className="!py-2 text-sm mb-4 w-full"
+          text="Entrar"
+          type="button"
+          onClick={handleSignIn}
+        />
+        <p>
+          Não tem uma conta? <a href="/register">Cadastre-se!</a>
+        </p>
+       
+        </Modal.Body>
+      </Modal>
+
       </Content>
       <div className="background z-0"></div>
     </Container>
