@@ -28,7 +28,7 @@ function AuthProvider({ children }) {
       // Adicionando o token do tipo bearer de authorization por padrão de todas requisições
       api.defaults.headers.authorization = `Bearer ${token}`;
       setLoading(0);
-      return toast.success("Logado com sucesso!", {
+      toast.success("Logado com sucesso!", {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -38,11 +38,16 @@ function AuthProvider({ children }) {
         progress: undefined,
         theme: "dark",
       });
+
+      return  { success: true, message: "Logado com sucesso!" }
+
+     
       
       
     } catch (error) {
       if (error.response) {
         setLoading(0);
+
         return toast.warn("Login ou senha incorretos!", {
           position: "bottom-right",
           autoClose: 5000,
@@ -55,6 +60,7 @@ function AuthProvider({ children }) {
         });
       } else {
         setLoading(0);
+        
         return toast.error(
           "Não foi possível fazer o login, tente novamente mais tarde!",
           {
