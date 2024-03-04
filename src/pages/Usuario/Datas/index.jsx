@@ -3,7 +3,7 @@ import seta from "../../../assets/seta-esquerda.svg";
 import { InputField } from "../../../components/InputField";
 import imgSenha from "../../../assets/olho-1.svg";
 import imgSenha2 from "../../../assets/olho-2.svg";
-
+import { useNavigate } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -19,9 +19,9 @@ import { useAuth } from "../../../hook/auth";
 import { toast } from "react-toastify";
 import { api } from "../../../services/api";
 
-import Zoom from '@mui/material/Zoom';
+import Zoom from "@mui/material/Zoom";
 
-import { Modal } from 'flowbite-react';
+import { Modal } from "flowbite-react";
 
 export function Datas() {
   const [dias, setDias] = useState([]);
@@ -30,20 +30,29 @@ export function Datas() {
   const [diaSelecionado, setDiaSelected] = useState();
   const [reservasExistentes, setReservasExistentes] = useState([]);
 
-  const [openModal, setOpenModal] = useState(false);
+  const [openModalLogin, setOpenModalLogin] = useState(false);
+  const [openModalConfirmReserva, setOpenModalConfirmReserva] = useState(false);
 
   const [login, setLogin] = useState();
   const [password, setPassword] = useState();
-  const {signIn, setLoading, loading } = useAuth();
+  const { signIn, setLoading, loading } = useAuth();
 
   const [hasValue, setHasValue] = useState(false);
   const [maskActive, setMaskActive] = useState(true);
   const [hasFocusLogin, setHasFocusLogin] = useState(false);
   const [hasFocusPassword, setHasFocusPassword] = useState(false);
-  
-  function onCloseModal() {
-    setOpenModal(false);
-    setEmail('');
+
+  const [horaSelected, setHoraSelected] = useState();
+
+  const navigate = useNavigate();
+
+  function onCloseModalLogin() {
+    setOpenModalLogin(false);
+    setEmail("");
+  }
+
+  function onCloseModalConfirmReserva() {
+    setOpenModalConfirmReserva(false);
   }
 
   const handleMask = () => {
@@ -79,11 +88,11 @@ export function Datas() {
 
     const retorno = signIn(login, password);
 
-retorno.then(result => {
-  if (result.success) {
-    setOpenModal(false) // Sucesso
-  }
-});
+    retorno.then((result) => {
+      if (result.success) {
+        setOpenModal(false);
+      }
+    });
     setLoading(1);
   }
 
@@ -97,7 +106,7 @@ retorno.then(result => {
   async function serchHorarioReservado(dataSelecionada) {
     try {
       const response = await api.get(
-        `/reserva/search?dia=${dataSelecionada.dia}&mes=${dataSelecionada.nomeMes}`
+        `/reserva/search?dia=${dataSelecionada.dia}&mes=${dataSelecionada.nomeMes}&ano=${dataSelecionada.ano}`
       );
       setReservasExistentes(response.data);
 
@@ -129,15 +138,19 @@ retorno.then(result => {
     }
   }
 
-  async function confirmReserva(horario) {
+  function confirmReserva(horario) {
+    if (!user) {
+      return setOpenModalLogin(true);
+    } else {
+      setHoraSelected(horario);
+      return setOpenModalConfirmReserva(true);
+    }
+  }
+
+  async function createReserva(horario) {
     const services = servicesSelectedHook.map((service) => {
       return service.id;
     });
-
-    if(!user) {
-      return setOpenModal(true);
-    
-    }
 
     try {
       await api.post(`/reserva`, {
@@ -147,19 +160,11 @@ retorno.then(result => {
         dia_reserva: diaSelecionado.dia,
         mes_reserva: diaSelecionado.nomeMes,
         hora_reserva: horario,
+        ano_reserva: diaSelecionado.ano,
       });
 
-      serchHorarioReservado(diaSelecionado);
-      return toast.success("Solicitação de reserva enviada!", {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
+      navigate('/inforeseva')
+      return serchHorarioReservado(diaSelecionado);
     } catch (error) {
       if (error.response) {
         return toast.warning(error.response.data.message, {
@@ -270,18 +275,28 @@ retorno.then(result => {
       const formatoDia = format(dia, "dd", { locale: ptBR });
       const nomeMes = format(dia, "MMMM", { locale: ptBR });
       const diaDaSemana = format(dia, "eee", { locale: ptBR });
-      trintaDias.push({ dia: formatoDia, nomeMes, diaDaSemana, id: i });
+      const ano = format(dia, "yyyy", { locale: ptBR });
+
+      trintaDias.push({
+        dia: formatoDia,
+        nomeMes,
+        diaDaSemana,
+        ano: ano,
+        id: i,
+      });
     }
 
     const dia = hoje;
     const formatoDia = format(dia, "dd", { locale: ptBR });
     const nomeMes = format(dia, "MMMM", { locale: ptBR });
     const diaDaSemana = format(dia, "eee", { locale: ptBR });
+    const ano = format(dia, "yyyy", { locale: ptBR });
 
     const diaInicialValue = {
       dia: formatoDia,
       nomeMes: nomeMes,
       diaDaSemana: diaDaSemana,
+      ano: ano,
     };
     setDiaSelected(diaInicialValue);
 
@@ -368,18 +383,26 @@ retorno.then(result => {
                   );
                   return (
                     <>
-                    {horarioReservado ? (
-                    <div className="horario botao-reservado" key={horario[0]}>
-                      <p>{horario[1]}</p>
-                        <Botao text="Reservado" className="!bg-stone-950 !text-slate-300" disabled  onClick={() => confirmReserva(horario[1])}/>
+                      {horarioReservado ? (
+                        <div
+                          className="horario botao-reservado"
+                          key={horario[0]}
+                        >
+                          <p>{horario[1]}</p>
+                          <Botao
+                            text="Reservado"
+                            className="!bg-stone-950 !text-slate-300"
+                            disabled
+                            onClick={() => confirmReserva(horario[1])}
+                          />
                         </div>
                       ) : (
                         <div className="horario" key={horario[0]}>
-                        <p>{horario[1]}</p>
-                        <Botao
-                          text="Confirmar"
-                          onClick={() => confirmReserva(horario[1])}
-                        />
+                          <p>{horario[1]}</p>
+                          <Botao
+                            text="Confirmar"
+                            onClick={() => confirmReserva(horario[1])}
+                          />
                         </div>
                       )}
                     </>
@@ -401,18 +424,26 @@ retorno.then(result => {
                   );
                   return (
                     <>
-                    {horarioReservado ? (
-                    <div className="horario botao-reservado" key={horario[0]}>
-                      <p>{horario[1]}</p>
-                        <Botao text="Reservado" className="!bg-stone-950 !text-slate-300" disabled  onClick={() => confirmReserva(horario[1])}/>
+                      {horarioReservado ? (
+                        <div
+                          className="horario botao-reservado"
+                          key={horario[0]}
+                        >
+                          <p>{horario[1]}</p>
+                          <Botao
+                            text="Reservado"
+                            className="!bg-stone-950 !text-slate-300"
+                            disabled
+                            onClick={() => confirmReserva(horario[1])}
+                          />
                         </div>
                       ) : (
                         <div className="horario" key={horario[0]}>
-                        <p>{horario[1]}</p>
-                        <Botao
-                          text="Confirmar"
-                          onClick={() => confirmReserva(horario[1])}
-                        />
+                          <p>{horario[1]}</p>
+                          <Botao
+                            text="Confirmar"
+                            onClick={() => confirmReserva(horario[1])}
+                          />
                         </div>
                       )}
                     </>
@@ -422,61 +453,91 @@ retorno.then(result => {
           </div>
         </div>
 
-        
-        <Modal show={openModal} size="md" onClose={onCloseModal} popup>
-       
-        <Modal.Body className="container-login ">
-        <Modal.Header />
-         
-        <h1>Faça login</h1>
-        <div className="container-input">
-          <InputField
-            type="text"
-            onChange={(e) => setLogin(e.target.value)}
-            onFocus={() => setHasFocusLogin(true)}
-            onBlur={() => setHasFocusLogin(false)}
-          />
-          <label
-            className={`label ${login || hasFocusLogin ? "inputHasValue" : ""}`}
-          >
-            Email
-          </label>
-        </div>
-        <div className="container-input">
-          <InputField
-            type={`${maskActive ? 'password' : 'text'}`}
-            onChange={(e) => setPassword(e.target.value)}
-            onFocus={() => setHasFocusPassword(true)}
-            onBlur={() => setHasFocusPassword(false)}
-          />
-          <label
-            className={`label ${
-              password || hasFocusPassword ? "inputHasValue" : ""
-            }`}
-          >
-            Senha
-          </label>
-          {maskActive == true ? (
-            <img src={imgSenha} alt="Imagem Senha" onClick={handleMask} />
-          ) : (
-            <img src={imgSenha2} alt="Imagem Senha" onClick={handleMask} />
-          )}
-        </div>
+        <Modal
+          show={openModalLogin}
+          size="md"
+          onClose={onCloseModalLogin}
+          popup
+        >
+          <Modal.Body className="container-login ">
+            <Modal.Header />
 
-        <a href="/">Esqueceu sua senha?</a>
-        <Botao
-          className="!py-2 text-sm mb-4 w-full"
-          text="Entrar"
-          type="button"
-          onClick={handleSignIn}
-        />
-        <p>
-          Não tem uma conta? <a href="/register">Cadastre-se!</a>
-        </p>
-       
-        </Modal.Body>
-      </Modal>
+            <h1>Faça login</h1>
+            <div className="container-input">
+              <InputField
+                type="text"
+                onChange={(e) => setLogin(e.target.value)}
+                onFocus={() => setHasFocusLogin(true)}
+                onBlur={() => setHasFocusLogin(false)}
+              />
+              <label
+                className={`label ${
+                  login || hasFocusLogin ? "inputHasValue" : ""
+                }`}
+              >
+                Email
+              </label>
+            </div>
+            <div className="container-input">
+              <InputField
+                type={`${maskActive ? "password" : "text"}`}
+                onChange={(e) => setPassword(e.target.value)}
+                onFocus={() => setHasFocusPassword(true)}
+                onBlur={() => setHasFocusPassword(false)}
+              />
+              <label
+                className={`label ${
+                  password || hasFocusPassword ? "inputHasValue" : ""
+                }`}
+              >
+                Senha
+              </label>
+              {maskActive == true ? (
+                <img src={imgSenha} alt="Imagem Senha" onClick={handleMask} />
+              ) : (
+                <img src={imgSenha2} alt="Imagem Senha" onClick={handleMask} />
+              )}
+            </div>
 
+            <a href="/">Esqueceu sua senha?</a>
+            <Botao
+              className="!py-2 text-sm mb-4 w-full"
+              text="Entrar"
+              type="button"
+              onClick={handleSignIn}
+            />
+            <p>
+              Não tem uma conta? <a href="/register">Cadastre-se!</a>
+            </p>
+          </Modal.Body>
+        </Modal>
+
+        <Modal
+          show={openModalConfirmReserva}
+          size="md"
+          onClose={onCloseModalConfirmReserva}
+          popup
+        >
+          <Modal.Body className="container-login ">
+            <Modal.Header />
+
+            <h1 className="text-center">Confirmar reserva</h1>
+
+            <Botao
+              className="!py-2 text-sm mb-4 w-full"
+              text="Recusar"
+              type="button"
+              onClick={() => setOpenModalConfirmReserva(false)}
+            />
+
+            <Botao
+              className="!py-2 text-sm mb-4 w-full"
+              text="Aceitar"
+              type="button"
+              onClick={() => createReserva(horaSelected)}
+            />
+          </Modal.Body>
+        </Modal>
       </Content>
       <div className="background z-0"></div>
     </Container>
