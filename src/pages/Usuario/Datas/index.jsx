@@ -163,7 +163,7 @@ export function Datas() {
         ano_reserva: diaSelecionado.ano,
       });
 
-      navigate('/inforeseva')
+      navigate('/sucess')
       return serchHorarioReservado(diaSelecionado);
     } catch (error) {
       if (error.response) {
@@ -521,21 +521,25 @@ export function Datas() {
           <Modal.Body className="container-login ">
             <Modal.Header />
 
-            <h1 className="text-center">Confirmar reserva</h1>
-
-            <Botao
+            <h1 className="!text-center">Deseja finalizar sua reserva?</h1>
+             <div className="flex justify-between gap-6">
+              <div className="w-full"> <Botao
               className="!py-2 text-sm mb-4 w-full"
               text="Recusar"
               type="button"
               onClick={() => setOpenModalConfirmReserva(false)}
-            />
-
-            <Botao
+            /></div>
+            
+            <div className="w-full"><Botao
               className="!py-2 text-sm mb-4 w-full"
               text="Aceitar"
               type="button"
               onClick={() => createReserva(horaSelected)}
-            />
+            /></div>
+
+            
+             </div>
+            
           </Modal.Body>
         </Modal>
       </Content>

@@ -5,6 +5,8 @@ import { Datas } from '../pages/Usuario/Datas'
 import { Reservas } from '../pages/Usuario/Reservas'
 import { Servicos } from '../pages/Usuario/Serviços'
 import { Not_found } from "../pages/not_found"
+import { Sucess_reserva } from "../pages/Usuario/Sucess_reserva"
+
 import { Dados } from "../pages/Dados"
 import { Gerenciar_servicos } from "../pages/Barbeiro/Gerenciar_serviços"
 
@@ -55,12 +57,7 @@ export function AppRoutes(){
             <Route path="/servicos-painel" element={ user?.isBarbeiro ? <ServicosPainel />  : <><Header /><Home /><Footer /></>} />
             <Route path="/solicitacoes-painel" element={ user?.isBarbeiro ? <Solicitacoes />  : <><Header /><Home /><Footer /></>} />
             <Route path="/agendamentos-painel" element={ user?.isBarbeiro ? <Agendamentos />  : <><Header /><Home /><Footer /></>} />
-
-
-
-
-
-
+            <Route path="/sucess" element={<Sucess_reserva />} />
         </Routes>
     )
 }
