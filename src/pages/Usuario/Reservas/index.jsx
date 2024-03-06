@@ -1,8 +1,26 @@
 import { Container, Content, Table } from "./style";
 import seta from "../../../assets/seta-esquerda.svg";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../../hook/auth";
+import { useEffect, useState } from "react";
+import { api } from "../../../services/api";
 
 export function Reservas() {
+
+  const { user } = useAuth();
+  const [reservas, setReservas] = useState();
+
+  console.log(reservas)
+
+  useEffect(() => {
+      async function searchReservas(){
+        const response = await api.get(`reserva/reservas/${user.id}`)
+        setReservas(response.data)
+      }
+
+      searchReservas()
+  }, [])
+
   return (
     <Container className="relative h-full">
       <div className="seta z-10 relative">

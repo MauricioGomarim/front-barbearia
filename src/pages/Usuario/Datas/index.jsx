@@ -44,6 +44,7 @@ export function Datas() {
 
   const [horaSelected, setHoraSelected] = useState();
 
+  
   const navigate = useNavigate();
 
   function onCloseModalLogin() {
@@ -152,6 +153,7 @@ export function Datas() {
       return service.id;
     });
 
+    const valor = servicesSelectedHook.reduce((accumulator, currentValue) => accumulator + Number(currentValue.valor), 0);
     try {
       await api.post(`/reserva`, {
         user_id: user.id,
@@ -161,9 +163,10 @@ export function Datas() {
         mes_reserva: diaSelecionado.nomeMes,
         hora_reserva: horario,
         ano_reserva: diaSelecionado.ano,
+        valor
       });
 
-      navigate('/sucess')
+      // navigate('/sucess')
       return serchHorarioReservado(diaSelecionado);
     } catch (error) {
       if (error.response) {
