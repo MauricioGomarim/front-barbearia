@@ -33,6 +33,7 @@ export function Header() {
   const [hasFocusLogin, setHasFocusLogin] = useState(false);
   const [hasFocusPassword, setHasFocusPassword] = useState(false);
 
+
   function onCloseModal() {
     setOpenModal(false);
     setEmail('');
@@ -184,7 +185,7 @@ retorno.then(result => {
                   </li>
                 ) : (
                   <li>
-                    <a href="/minhas-reservas">
+                    <a href='minhas-reservas/'>
                       <BsGrid3X3GapFill />
                       <div>
                         <h1>Minhas reservas</h1>
@@ -222,7 +223,6 @@ retorno.then(result => {
       </Content>
       <Modal show={openModal} size="md" onClose={onCloseModal} popup>
         <Box>
-      <Zoom in={openModal}>teste</Zoom>
       </Box>
        <Modal.Body className="container-login ">
        <Modal.Header />

@@ -19,6 +19,7 @@ import { useAuth } from "../../../hook/auth";
 export function Servicos() {
   const [users, setUsers] = useState();
   const barbeiros = users?.filter((user) => user.isBarbeiro);
+
   const [profissionalAtivo, setProfissionalAtivo] = useState(1);
   const [services, setServices] = useState([]);
   const [servicesSelected, setServicesSelected] = useState([]);
