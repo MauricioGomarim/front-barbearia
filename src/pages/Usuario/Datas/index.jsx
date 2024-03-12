@@ -25,7 +25,7 @@ import { Modal } from "flowbite-react";
 
 export function Datas() {
   const [dias, setDias] = useState([]);
-  const { servicesSelectedHook, user, barbeiro } = useAuth();
+  const { servicesSelectedHook, user, barbeiro, Logout } = useAuth();
   const [activeIndex, setActiveIndex] = useState(null);
   const [diaSelecionado, setDiaSelected] = useState();
   const [reservasExistentes, setReservasExistentes] = useState([]);
@@ -114,7 +114,8 @@ export function Datas() {
       return;
     } catch (error) {
       if (error.response) {
-        return toast.warning(error.response.data.message, {
+        Logout()
+        return toast.warning((error.response.data.message), {
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,

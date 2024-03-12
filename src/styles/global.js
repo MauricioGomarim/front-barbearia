@@ -7,6 +7,10 @@ export const GlobalStyles = createGlobalStyle`
         box-sizing: border-box;
     }
 
+    div[role='dialog'] > div {
+      background-color: transparent;
+      background: transparent;
+    }
     .container-login {
   width: 100%;
   max-width: 400px;

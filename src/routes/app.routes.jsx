@@ -20,10 +20,6 @@ import { QrcodePage } from '../pages/Painel/QrcodePage'
 
 
 
-
-
-
-
 import { Header } from "../components/Header/index.jsx";
 import { Footer } from "../components/Footer/index.jsx";
 import { HeaderPainel } from "../components/HeaderPainel";
