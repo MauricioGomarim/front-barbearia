@@ -16,6 +16,8 @@ import { ServicosPainel } from '../pages/Painel/ServicosPainel'
 import { Dashboard } from '../pages/Painel/Dashboard'
 import { Solicitacoes } from '../pages/Painel/Solicitacoes'
 import { Agendamentos } from '../pages/Painel/Agendamentos'
+import { QrcodePage } from '../pages/Painel/QrcodePage'
+
 
 
 
@@ -57,6 +59,8 @@ export function AppRoutes(){
             <Route path="/servicos-painel" element={ user?.isBarbeiro ? <ServicosPainel />  : <><Header /><Home /><Footer /></>} />
             <Route path="/solicitacoes-painel" element={ user?.isBarbeiro ? <Solicitacoes />  : <><Header /><Home /><Footer /></>} />
             <Route path="/agendamentos-painel" element={ user?.isBarbeiro ? <Agendamentos />  : <><Header /><Home /><Footer /></>} />
+            <Route path="/qrcode" element={ user?.isBarbeiro ? <QrcodePage />  : <><Header /><Home /><Footer /></>} />
+
             <Route path="/sucess" element={<Sucess_reserva />} />
         </Routes>
     )

@@ -166,7 +166,7 @@ export function Datas() {
         valor
       });
 
-      // navigate('/sucess')
+      navigate('/sucess')
       return serchHorarioReservado(diaSelecionado);
     } catch (error) {
       if (error.response) {

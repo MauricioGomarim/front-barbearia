@@ -5,6 +5,9 @@ import perfil from "../../assets/icones/homem.svg";
 import servicos from "../../assets/icones/servico-tecnico.svg";
 import solicitacoes from "../../assets/icones/pendencia.svg";
 import agendamentos from "../../assets/icones/calendario.svg";
+import qr from "../../assets/icones/qr.svg";
+
+import { LiaQrcodeSolid } from "react-icons/lia";
 import deslogar from "../../assets/icones/deslogar.svg";
 import { useAuth } from "../../hook/auth.jsx";
 
@@ -53,6 +56,13 @@ export function Menu() {
             <NavLink to="/agendamentos-painel">
               <img src={agendamentos} />
               <p>Agendamentos</p>
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink to="/qrcode">
+            <img src={qr} />
+              <p>QRCode</p>
             </NavLink>
           </li>
         </ul>

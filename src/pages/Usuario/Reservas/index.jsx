@@ -6,20 +6,34 @@ import { useEffect, useState } from "react";
 import { api } from "../../../services/api";
 
 export function Reservas() {
-
   const { user } = useAuth();
   const [reservas, setReservas] = useState();
 
-  console.log(reservas)
+  console.log(reservas);
+
+  function formatReal(value) {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(value);
+  }
+
+  function format12HourTime(timeString) {
+    const [hour, minute] = timeString.split(':');
+    const twelveHour = parseInt(hour, 10) % 12 || 12;
+    const amOrPm = parseInt(hour, 10) >= 12 ? 'PM' : 'AM';
+  
+    return `${twelveHour}:${minute} ${amOrPm}`;
+  }
 
   useEffect(() => {
-      async function searchReservas(){
-        const response = await api.get(`reserva/reservas/${user.id}`)
-        setReservas(response.data)
-      }
+    async function searchReservas() {
+      const response = await api.get(`reserva/reservas/${user.id}`);
+      setReservas(response.data);
+    }
 
-      searchReservas()
-  }, [])
+    searchReservas();
+  }, []);
 
   return (
     <Container className="relative h-full">
@@ -43,29 +57,16 @@ export function Reservas() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Corte, Barba, Sombrancelha</td>
-                <td>14/01/2024</td>
-                <td>PM 10:30</td>
-                <td>R$ 42,00</td>
-                <td className="processando">Processando</td>
-              </tr>
-
-              <tr>
-                <td>Corte, Barba, Sombrancelha</td>
-                <td>14/01/2024</td>
-                <td>PM 10:30</td>
-                <td>R$ 42,00</td>
-                <td className="recusado">Recusado</td>
-              </tr>
-
-              <tr>
-                <td>Corte, Barba, Sombrancelha</td>
-                <td>14/01/2024</td>
-                <td>PM 10:30</td>
-                <td>R$ 42,00</td>
-                <td className="aprovado">Aprovado</td>
-              </tr>
+              {reservas &&
+                reservas.map((reserva) => (
+                  <tr>
+                    <td>Corte, Barba, Sombrancelha</td>
+                    <td>{reserva.dia_reserva}/{reserva.mes_reserva}/{reserva.ano_reserva}</td>
+                    <td>{format12HourTime(reserva.hora_reserva)}</td>
+                    <td>{formatReal(reserva.valor)}</td>
+                    <td className={`${reserva.status}`}>{reserva.status}</td>
+                  </tr>
+                ))}
             </tbody>
           </Table>
         </div>

@@ -65,13 +65,13 @@ export const Table = styled.table`
       border: 1px solid #7A7A7A;
     }
 
-    .processando {
+    .Pendente {
       color: ${({ theme }) => theme.COLORS.ORANGE};
     }
-    .aprovado {
+    .Aprovado {
       color: ${({ theme }) => theme.COLORS.GREEN};
     }
-    .recusado {
+    .Recusado {
       color: ${({ theme }) => theme.COLORS.RED};
     }
   }
