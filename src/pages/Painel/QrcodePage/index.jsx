@@ -17,10 +17,18 @@ export function QrcodePage() {
   // console.log(qrCode)
   
   useEffect(() => {
-    function conecao(){
-      io.connect('http://localhost:3333')
-    }
-    conecao()
+    const socket = io("http://localhost:3333");
+
+    // Ouvir o evento "qr_code" emitido pelo servidor
+    socket.on("qr_code", (data) => {
+      // Atualizar o estado qrCode com o valor recebido do servidor
+      setQrCode(data.qrCode);
+    });
+
+    // Retornar uma função de limpeza para desconectar o socket quando o componente for desmontado
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   // useEffect(() => {
