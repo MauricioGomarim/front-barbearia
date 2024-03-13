@@ -6,7 +6,7 @@ import { api } from "../../../services/api";
 import { useEffect, useState } from "react";
 import QRCode from "qrcode.react";
 import robo_green from "../../../assets/green.png";
-import robo_red from "../../../assets/red.jfif";
+import robo_red from "../../../assets/red.png";
 import io from 'socket.io-client'
 
 
@@ -29,7 +29,7 @@ export function QrcodePage() {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [qrCode]);
 
   // useEffect(() => {
   //   const fetchQRCode = async () => {
@@ -48,7 +48,6 @@ export function QrcodePage() {
       <Menu />
       <div className="content flex flex-col justify-center items-center">
         <h1 className="text-[25px] mb-10 text-black font-bold">
-          <h1>{qrCode} teste</h1>
           {qrCode == 'autenticado' ? (
   <h1>Autenticado!</h1>
           ) : (<h1>Escaneie o QRCode para ativar o robo de notificações!</h1>)}
@@ -65,7 +64,7 @@ export function QrcodePage() {
           <div className="w-full lg:w-3/6 flex flex-col items-center">
             {qrCode == "autenticado" ? (
               <QRCode value={''} size={400} className="opacity-50" />
-            ) : qrCode == "gerando" ? (
+            ) : qrCode == null ? (
               <><h1>Gerando QRCode</h1></>
             ) : (
               <QRCode value={qrCode} size={400} />

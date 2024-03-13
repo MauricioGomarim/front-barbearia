@@ -44,6 +44,7 @@ export function Datas() {
 
   const [horaSelected, setHoraSelected] = useState();
 
+  console.log(diaSelecionado)
   
   const navigate = useNavigate();
 
@@ -155,6 +156,9 @@ export function Datas() {
     });
 
     const valor = servicesSelectedHook.reduce((accumulator, currentValue) => accumulator + Number(currentValue.valor), 0);
+    const diaDaSemana = diaSelecionado.diaDaSemana.charAt(0).toUpperCase() + diaSelecionado.diaDaSemana.slice(1);
+
+
     try {
       await api.post(`/reserva`, {
         user_id: user.id,
@@ -164,6 +168,7 @@ export function Datas() {
         mes_reserva: diaSelecionado.nomeMes,
         hora_reserva: horario,
         ano_reserva: diaSelecionado.ano,
+        diaDaSemana,
         valor
       });
 
