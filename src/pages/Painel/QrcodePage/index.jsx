@@ -17,29 +17,24 @@ export function QrcodePage() {
   // console.log(qrCode)
   
   useEffect(() => {
-    const socket = io("http://localhost:3333");
+    const fetchData = async () => {
+      const socket = io("http://localhost:3333");
 
-    // Ouvir o evento "qr_code" emitido pelo servidor
-    socket.on("qr_code", (data) => {
-      // Atualizar o estado qrCode com o valor recebido do servidor
-      setQrCode(data.qrCode);
-    });
+      // Ouvir o evento "qr_code" emitido pelo servidor
+      socket.on("qr_code", (data) => {
+        // Atualizar o estado qrCode com o valor recebido do servidor
+        setQrCode(data.qrCode);
+      });
 
-    // Retornar uma função de limpeza para desconectar o socket quando o componente for desmontado
-    return () => {
-      socket.disconnect();
+      // Retornar uma função de limpeza para desconectar o socket quando o componente for desmontado
+      return () => {
+        socket.disconnect();
+      };
     };
-  }, [qrCode]);
 
-  // useEffect(() => {
-  //   const fetchQRCode = async () => {
-  //     const response = await api.get("/qrcode");
-  //     console.log(response);
-  //     setQrCode(response.data.qrCode);
-  //   };
+    fetchData();
 
-  //   fetchQRCode();
-  // }, []);
+  }, []);
   return (
     <Container
       style={{ gridTemplateColumns: menuActive ? "250px auto" : "80px auto" }}
