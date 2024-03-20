@@ -21,10 +21,9 @@ export function Perfil() {
   const [descricao, setDescricao] = useState();
   const [password, setPassword] = useState();
   const [old_password, setOldPassword] = useState();
-
+  
   async function handleEditar() {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    console.log(descricao)
     // Verifica se o email é válido
     if (!email || !emailPattern.test(email)) {
       return toast.warning('Insira um email válido!', {

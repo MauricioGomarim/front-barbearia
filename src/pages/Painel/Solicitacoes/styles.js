@@ -160,7 +160,8 @@ export const Section = styled.div`
     width: fit-content;
     padding: 5px 15px;
     border-radius: 5px;
-
+    cursor: pointer;
+    
     svg {
       font-size: 25px;
       color: black;
@@ -173,6 +174,7 @@ export const Section = styled.div`
     width: fit-content;
     padding: 5px 15px;
     border-radius: 5px;
+    cursor: pointer;
 
     svg {
       font-size: 25px;

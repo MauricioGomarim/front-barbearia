@@ -9,8 +9,6 @@ export function Reservas() {
   const { user } = useAuth();
   const [reservas, setReservas] = useState();
 
-  console.log(reservas);
-
   function formatReal(value) {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
