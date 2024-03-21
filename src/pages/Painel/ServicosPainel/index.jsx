@@ -67,6 +67,7 @@ export function ServicosPainel() {
 
   const [services, setServices] = useState([]);
 
+  console.log(services)
   /* parte do modal de adicionar serviço */
   const handleSliderChange = (event) => {
     const value = event.target.value; // Obtendo o valor do evento
@@ -223,18 +224,20 @@ export function ServicosPainel() {
     }
   }
 
+  async function getServices() {
+    const response = await api.get(`/services?title=${search}&id=${user.id}`);
+    setServices(response.data);
+  }
+
   useEffect(() => {
-    async function getServices() {
-      const response = await api.get(`/services?title=${search}`);
-      setServices(response.data);
-    }
+
 
     getServices();
   }, [
     openModalAdicionarServico,
     openModalEditarServico,
     reloadServices,
-    search,
+    search
   ]);
 
   return (

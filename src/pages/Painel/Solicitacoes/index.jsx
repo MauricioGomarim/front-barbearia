@@ -20,13 +20,13 @@ import { api } from "../../../services/api";
 
 
 export function Solicitacoes() {
-  const { menuActive, setMenuActive } = useAuth();
+  const { menuActive, setMenuActive, user } = useAuth();
   const [reservas, setReserva] = useState();
   const [handle, setHandle] = useState(0);
  
   async function fetchReservas() {
 
-    const response = await api.get(`/reserva/reservas?status=Pendente`);
+    const response = await api.get(`/reserva/reservas?status=Pendente&id=${user.id}`);
     setReserva(response.data)
 }
 
@@ -114,9 +114,10 @@ async function handleReprovar(id) {
  
 }
 
+
   useEffect(() => {
     fetchReservas();
-  }, [handle])
+  }, [handle, user])
 
   return (
     <Container
